@@ -1,41 +1,77 @@
 package com.dynamic_library_management.controllers;
 
+import java.io.IOException;
+import java.util.List;
+
+import com.dynamic_library_management.domain.BookCategory;
+import com.dynamic_library_management.exceptions.DatabaseException;
+import com.dynamic_library_management.exceptions.InvalidDetailsException;
+import com.dynamic_library_management.services.implementation.BookServiceImplementation;
+
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Servlet implementation class AddBookController
  */
-@WebServlet("/AddBookController")
+@WebServlet("/addBookController")
 public class AddBookController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddBookController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	private boolean success;
+	private String message;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String title = request.getParameter("title");
+		String author = request.getParameter("author");
+		BookCategory category = BookCategory.getEnumConstant(request.getParameter("category"));
+		try {
+			new BookServiceImplementation().validateAddBook(title, author, category);
+			setSuccess(true);
+			setMessage("Book Added Succesfully...");
+//			ResponseHandler.showResponse(message, "Book Added Succesfully...", Color.GREEN);
+		} catch (InvalidDetailsException | DatabaseException e) {
+			setSuccess(false);
+			setMessage(e.getMessage());
+//			ResponseHandler.showResponse(message, e.getMessage(), Color.RED);
+		} finally {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/addBook.jsp");
+			request.setAttribute("message", getMessage());
+			request.setAttribute("success", isSuccess());
+			request.setAttribute("categoryList", List.of(BookCategory.values()));
+			if (isSuccess()) {
+//				requestDispatcher.forward(request, response);
+				response.sendRedirect("jsp/addBook.jsp");
+			} else {
+				requestDispatcher.include(request, response);
+			}
+
+		}
 	}
 
 }
