@@ -11,7 +11,7 @@ import java.util.List;
 import com.dynamic_library_management.dao.MemberDaoInterface;
 import com.dynamic_library_management.domain.Member;
 import com.dynamic_library_management.exceptions.DatabaseException;
-import com.dynamic_library_management.utilities.DBConnection;
+
 
 
 
@@ -21,7 +21,7 @@ public class MemberDaoImplementation implements MemberDaoInterface {
 
 	public int insertMember(Member member) throws SQLException, DatabaseException {
 		String query = "insert into members (name, email, mobile, gender, address) VALUES (?, ?, ?, ?, ?)";
-		Connection con=DBConnection.getConn();
+		Connection con=ConnectionPoolingServlet.;
 		int id=-1;
 		try {
 			PreparedStatement ps=con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

@@ -30,3 +30,4 @@ wtpwebapps/
 # Example: configuration files with sensitive data
 # application.properties.local
 # .env
+/build/
