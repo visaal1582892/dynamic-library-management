@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ConnectionPoolingServlet
  */
-@WebServlet("/ConnectionPoolingServlet")
+@WebServlet(urlPatterns = "/ConnectionPoolingServlet", loadOnStartup = 0)
 public class ConnectionPoolingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static DataSource dataSource;
@@ -25,11 +25,12 @@ public class ConnectionPoolingServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		try {
+			Class.forName("com.mysql.jdbc.Driver");
 			InitialContext initialContext = new InitialContext();
 			Context envContext = (Context) initialContext.lookup("java:comp/env");
 			dataSource = (DataSource) envContext.lookup("lms");
 			System.out.println("Connection Pool Created Succesfully...");
-		} catch (NamingException e) {
+		} catch (NamingException | ClassNotFoundException e) {
 
 			System.out.println("Connection Pool Creation Failed...");
 		}
