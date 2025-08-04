@@ -47,14 +47,14 @@ public class AddMemberController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String name=request.getParameter("name");
-		String email=request.getParameter("email");
-		String mobileno=request.getParameter("mobile");
-		String gender=request.getParameter("gender");
-		String address=request.getParameter("address");
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String mobileno = request.getParameter("mobile");
+		String gender = request.getParameter("gender");
+		String address = request.getParameter("address");
 		try {
 			try {
-				new MemberServiceImplementation().addMember(new Member(name,email,mobileno,gender,address));
+				new MemberServiceImplementation().addMember(new Member(name, email, mobileno, gender, address));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -67,12 +67,11 @@ public class AddMemberController extends HttpServlet {
 			setMessage(e.getMessage());
 //			ResponseHandler.showResponse(message, e.getMessage(), Color.RED);
 		} finally {
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("addMember.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/addMember.jsp");
 			request.setAttribute("message", getMessage());
 			request.setAttribute("success", isSuccess());
 			if (isSuccess()) {
-//				requestDispatcher.forward(request, response);
-				response.sendRedirect("addMember.jsp");
+				requestDispatcher.forward(request, response);
 			} else {
 				requestDispatcher.include(request, response);
 			}

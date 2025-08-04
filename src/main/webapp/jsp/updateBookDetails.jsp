@@ -94,13 +94,8 @@ request.setAttribute("bookList", new BookDaoImplementation().selectAllBooks());
 	
         function loadBookDetails() {
             const selectedId = Number(document.getElementById("bookSelector").value.split(".")[0]);
-            console.log(selectedId);
-            
-            console.log(bookMap);
             
             const currBook=bookMap?.get(selectedId);
-            
-            console.log(currBook);
             
             document.getElementById("titleField").value=currBook["title"];
             document.getElementById("authorField").value=currBook["author"];
