@@ -17,7 +17,7 @@
             <%= request.getAttribute("message") %>
         </div>
 
-        <a href="html/bookOptions.html">← Back To Book Options</a>
+        <a href="jsp/bookOptions.jsp">← Back To Book Options</a>
     </main>
 </body>
 </html>

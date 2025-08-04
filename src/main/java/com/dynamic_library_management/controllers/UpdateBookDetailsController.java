@@ -61,8 +61,6 @@ public class UpdateBookDetailsController extends HttpServlet {
 		BookCategory category = BookCategory.getEnumConstant(request.getParameter("category"));
 		BookStatus status = BookStatus.getEnumConstant(request.getParameter("status"));
 
-		System.out.println(id + title + author + category + status);
-
 		try {
 			new BookServiceImplementation().validateUpdateBookDetails(id, title, author, category, status);
 			setSuccess(true);
