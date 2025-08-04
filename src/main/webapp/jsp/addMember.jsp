@@ -79,7 +79,7 @@
 <body>
 
     <!-- Back and Home Buttons -->
-    <a href="home.jsp">Home</a> |
+    <a href="index.jsp">Home</a> |
     <a href="memberManagement.jsp">Back</a>
 
     <div class="container">

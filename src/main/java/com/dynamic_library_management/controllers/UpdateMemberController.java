@@ -4,9 +4,9 @@ import com.dynamic_library_management.dao.implementation.MemberDaoImplementation
 import com.dynamic_library_management.domain.Member;
 import com.dynamic_library_management.exceptions.DatabaseException;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -19,10 +19,7 @@ public class UpdateMemberController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<Member> members = dao.getAllMembers();
-            System.out.println("Loaded members: " + (members != null ? members.size() : "null"));
-
-            request.setAttribute("members", members);
+           
 
             String idStr = request.getParameter("memberId");
             if (idStr != null && !idStr.isEmpty()) {
@@ -31,7 +28,7 @@ public class UpdateMemberController extends HttpServlet {
                 request.setAttribute("selectedMember", selected);
             }
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
             dispatcher.forward(request, response);
 
         } catch (SQLException | DatabaseException e) {
@@ -59,7 +56,7 @@ public class UpdateMemberController extends HttpServlet {
             request.setAttribute("selectedMember", newMember);
             request.setAttribute("members", dao.getAllMembers());
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
             dispatcher.forward(request, response);
 
         } catch (SQLException | DatabaseException | NumberFormatException e) {
@@ -68,7 +65,7 @@ public class UpdateMemberController extends HttpServlet {
                 request.setAttribute("selectedMember", dao.selectMemberById(Integer.parseInt(request.getParameter("memberId"))));
                 request.setAttribute("members", dao.getAllMembers());
             } catch (Exception ignored) {}
-            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
             dispatcher.forward(request, response);
         }
     }

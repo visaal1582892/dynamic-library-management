@@ -69,7 +69,12 @@
                 <option value="">-- Select Member --</option>
                 <%
                 MemberDaoImplementation dao=new MemberDaoImplementation();
-                    List<Member> allmembers = dao.getAllMembers();
+                List<Member> members = dao.getAllMembers();
+                System.out.println("Loaded members: " + (members != null ? members.size() : "null"));
+
+                request.setAttribute("members", members);
+                List<Member> allmembers = (List<Member>) request.getAttribute("members");
+                
                     Member selected = (Member) request.getAttribute("selectedMember");
                     int selectedId = (selected != null) ? selected.getMemberId() : -1;
 
@@ -123,7 +128,7 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-update">Update</button>
-            <a href="home.jsp" class="btn btn-home">Home </a>
+            <a href="index.jsp" class="btn btn-home">Home </a>
             <a href="memberManagement.jsp" class="btn btn-back">← Back</a>
         </div>
         <% } %>

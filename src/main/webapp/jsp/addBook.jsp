@@ -20,7 +20,7 @@
 <body>
     <main id="main-container">
         <h1>Add Book</h1>
-        <form action="${pageContext.request.contextPath}/addBookController" method="post">
+        <form action="/dynamic-library-management/addBookController" method="post">
             <div class="input-container">
                 <label>Title:</label>
                 <input name="title" required />
