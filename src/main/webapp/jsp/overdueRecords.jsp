@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>All Issues</title>
+<title>Insert title here</title>
 <style>
         body {
             background: linear-gradient(to bottom, #e3f2fd, #ffffff);
@@ -24,7 +23,7 @@
     </style>
 </head>
 <body>
-	<h1>All Issues</h1>
+<h1>Overdue Records</h1>
 	<table border="3" style="margin: 0px auto;">
 		<tr>
 			<th>Issue ID</th>
@@ -34,7 +33,7 @@
 			<th>Issue Date</th>
 			<th>Return date</th>
 		</tr>
-		<c:forEach var="issue" items="${issues}">
+		<c:forEach var="issue" items="${overdue}">
 			<tr>
 				<td><c:out value="${issue.issueId}" /></td>
 				<td><c:out value="${issue.bookId}" /></td>

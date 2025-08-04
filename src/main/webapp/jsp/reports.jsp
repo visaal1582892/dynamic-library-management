@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,11 +38,7 @@ h1 {
 </style>
 </head>
 <body>
-	<h1>Issue / Return Book</h1>
-	<a href="../issueRecord" class="btn">Issue Book</a>
-	<br>
-	<a href="../returnRecord" class="btn">Return Book</a>
-	<br>
-	<a href="../viewIssues" class="btn">View All Issues</a>
+<h1>Reports</h1>
+	<a href="../overdueRecords" class="btn">Overdue Books</a>
 </body>
 </html>

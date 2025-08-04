@@ -19,6 +19,7 @@ public class ViewIssuesController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		System.out.println("inside get");
 		try {
 
