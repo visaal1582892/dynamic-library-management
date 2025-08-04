@@ -10,6 +10,8 @@ request.setAttribute("bookslist", booksList);
 
 <html>
 <head>
+
+
     <title>View All Members</title>
     <style>
         table {
@@ -41,6 +43,7 @@ request.setAttribute("bookslist", booksList);
     </style>
 </head>
 <body>
+
     <h2>All Books</h2>
 
     <%

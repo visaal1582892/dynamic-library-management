@@ -8,6 +8,9 @@
 </head>
 <body>
     <main id="main-container">
+
+  
+    
         <h1>Book Options</h1>
         <div id="options-list">
             <a href="./addBook.jsp">Add Book</a>

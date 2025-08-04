@@ -79,13 +79,12 @@
 <body>
 
     <!-- Back and Home Buttons -->
-    <a href="index.jsp">Home</a> |
-    <a href="memberManagement.jsp">Back</a>
+    <a href="${pageContext.request.contextPath}/jsp/index.jsp">Home</a> |
+    <a href="${pageContext.request.contextPath}/jsp/memberManagement.jsp">Back</a>
 
     <div class="container">
         <h1>REGISTRATION FORM</h1>
 
-        <!-- Optional message display -->
         <c:if test="${not empty message}">
             <div class="message">${message}</div>
         </c:if>

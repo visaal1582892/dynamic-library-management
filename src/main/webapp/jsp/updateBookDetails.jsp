@@ -30,6 +30,8 @@ request.setAttribute("bookList", new BookDaoImplementation().selectAllBooks());
 </head>
 <body>
 	<main id="main-container">
+	
+	
 		<h1>Update Book</h1>
 		<form action="${pageContext.request.contextPath}/updateBookDetailsController"
 			method="post">
