@@ -11,8 +11,8 @@ public interface MemberDaoInterface {
    public int insertMember(Member member) throws SQLException, DatabaseException;
    List<Member> getAllMembers() throws SQLException;
 
-void updateMember(Member oldMember , Member newMember) throws DatabaseException;
-Member selectMemberById(int id) throws DatabaseException;
-boolean deleteMember(int memberId) throws DatabaseException;
+void updateMember(Member oldMember , Member newMember) throws DatabaseException, SQLException;
+Member selectMemberById(int id) throws DatabaseException, SQLException;
+boolean deleteMember(int memberId) throws DatabaseException, SQLException;
    
 }

@@ -1,0 +1,31 @@
+package com.dynamic_library_management.controllers;
+
+import com.dynamic_library_management.exceptions.DatabaseException;
+import com.dynamic_library_management.services.implementation.MemberServiceImplementation;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.sql.SQLException;
+
+@WebServlet("/deleteMember")
+public class DeleteMemberController extends HttpServlet {
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int memberId = Integer.parseInt(request.getParameter("memberId"));
+
+        try {
+            boolean deleted = new MemberServiceImplementation().deleteMemberById(memberId);
+            if (deleted) {
+                request.getSession().setAttribute("successMessage", "Member Deleted Successfully");
+            } else {
+                request.getSession().setAttribute("errorMessage", "Failed to Delete Member");
+            }
+        } catch (DatabaseException | SQLException e) {
+            request.getSession().setAttribute("errorMessage", e.getMessage());
+        }
+
+        response.sendRedirect("viewAllMembers");
+    }
+}

@@ -1,0 +1,75 @@
+package com.dynamic_library_management.controllers;
+
+import com.dynamic_library_management.dao.implementation.MemberDaoImplementation;
+import com.dynamic_library_management.domain.Member;
+import com.dynamic_library_management.exceptions.DatabaseException;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+@WebServlet("/updateMemberController")
+public class UpdateMemberController extends HttpServlet {
+
+    private final MemberDaoImplementation dao = new MemberDaoImplementation();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            List<Member> members = dao.getAllMembers();
+            System.out.println("Loaded members: " + (members != null ? members.size() : "null"));
+
+            request.setAttribute("members", members);
+
+            String idStr = request.getParameter("memberId");
+            if (idStr != null && !idStr.isEmpty()) {
+                int id = Integer.parseInt(idStr);
+                Member selected = dao.selectMemberById(id);
+                request.setAttribute("selectedMember", selected);
+            }
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            dispatcher.forward(request, response);
+
+        } catch (SQLException | DatabaseException e) {
+            e.printStackTrace();
+            throw new ServletException("Error loading members", e);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            int memberId = Integer.parseInt(request.getParameter("memberId"));
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String mobile = request.getParameter("mobile");
+            String address = request.getParameter("address");
+            String gender = request.getParameter("gender");
+
+            Member oldMember = dao.selectMemberById(memberId);
+            Member newMember = new Member(memberId, name, email, mobile, gender, address);
+
+            dao.updateMember(oldMember, newMember);
+
+            request.setAttribute("message", " Member updated successfully.");
+            request.setAttribute("selectedMember", newMember);
+            request.setAttribute("members", dao.getAllMembers());
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            dispatcher.forward(request, response);
+
+        } catch (SQLException | DatabaseException | NumberFormatException e) {
+            request.setAttribute("message", "Update failed: " + e.getMessage());
+            try {
+                request.setAttribute("selectedMember", dao.selectMemberById(Integer.parseInt(request.getParameter("memberId"))));
+                request.setAttribute("members", dao.getAllMembers());
+            } catch (Exception ignored) {}
+            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+}

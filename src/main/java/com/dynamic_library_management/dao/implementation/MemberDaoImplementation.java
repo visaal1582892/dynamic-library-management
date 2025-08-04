@@ -7,70 +7,104 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
 
 import com.dynamic_library_management.dao.MemberDaoInterface;
 import com.dynamic_library_management.domain.Member;
 import com.dynamic_library_management.exceptions.DatabaseException;
+import com.dynamic_library_management.utilities.ConnectionPoolingServlet;
 
 
 
 
 public class MemberDaoImplementation implements MemberDaoInterface {
 
-	@Override
+	private final DataSource dataSource = ConnectionPoolingServlet.getDataSource();
 
-	public int insertMember(Member member) throws SQLException, DatabaseException {
-		String query = "insert into members (name, email, mobile, gender, address) VALUES (?, ?, ?, ?, ?)";
-		Connection con=ConnectionPoolingServlet.;
-		int id=-1;
-		try {
-			PreparedStatement ps=con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1,member.getMemberName());
-			ps.setString(2,member.getMemberMail());
-			ps.setString(3, member.getMobileNo());
-			ps.setString(4,member.getGender());
-			ps.setString(5, member.getMemberAddress());
-			ps.execute();
-			ResultSet rs=ps.getGeneratedKeys();
-			if(rs.next()) {
-				id=rs.getInt(1);
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	@Override
+	public int insertMember(Member member) throws DatabaseException {
+		int id = -1;
+		try (Connection conn = getDataSource().getConnection();
+				PreparedStatement psInsert = conn.prepareStatement(
+						"insert into members (name, email, mobile, gender, address) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);) {
+
+			psInsert.setString(1, member.getMemberName());
+			psInsert.setString(2, member.getMemberMail());
+			psInsert.setString(3, member.getMobileNo());
+			psInsert.setString(4, member.getGender());
+			psInsert.setString(5, member.getMemberAddress());
+			psInsert.executeUpdate();
+			ResultSet rs = psInsert.getGeneratedKeys();
+			if (rs.next()) {
+				id = rs.getInt(1);
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DatabaseException(e.getMessage());
 		}
 		return id;
-
 	}
+
+	
+	
+	
+//	@Override
+//
+//	public int insertMember(Member member) throws SQLException, DatabaseException {
+//		String query = "insert into members (name, email, mobile, gender, address) VALUES (?, ?, ?, ?, ?)";
+//		Connection con=ConnectionPoolingServlet.;
+//		int id=-1;
+//		try {
+//			PreparedStatement ps=con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+//			ps.setString(1,member.getMemberName());
+//			ps.setString(2,member.getMemberMail());
+//			ps.setString(3, member.getMobileNo());
+//			ps.setString(4,member.getGender());
+//			ps.setString(5, member.getMemberAddress());
+//			ps.execute();
+//			ResultSet rs=ps.getGeneratedKeys();
+//			if(rs.next()) {
+//				id=rs.getInt(1);
+//			}
+//		}catch(SQLException e) {
+//			throw new DatabaseException(e.getMessage());
+//		}
+//		return id;
+//
+//	}
 	
 	
 
 	@Override
 	public List<Member> getAllMembers() throws SQLException {
 	    List<Member> members = new ArrayList<>();
-	    String query = "SELECT * FROM members";
-	    Connection con = DBConnection.getConn();
-	    PreparedStatement ps = con.prepareStatement(query);
-	    ResultSet rs = ps.executeQuery();
+	    String query = "select * from lms.members";
+	    try (Connection con = getDataSource().getConnection();
+	         PreparedStatement ps = con.prepareStatement(query);
+	         ResultSet rs = ps.executeQuery()) {
 
-	    while (rs.next()) {
-	        int id=rs.getInt("member_id"); 
-	        String name=rs.getString("name");
-	        String email = rs.getString("email");
-	        String mobile = rs.getString("mobile");
-	        String gender = rs.getString("gender");
-	        String address = rs.getString("address");
+	        while (rs.next()) {
+	            int id = rs.getInt("member_id");
+	            String name = rs.getString("name");
+	            String email = rs.getString("email");
+	            String mobile = rs.getString("mobile");
+	            String gender = rs.getString("gender");
+	            String address = rs.getString("address");
 
-	        Member member = new Member(id, name, email, mobile, gender, address);
-	        members.add(member);
+	            members.add(new Member(id, name, email, mobile, gender, address));
+	        }
+	        System.out.println("members"+members);
+
 	    }
-
 	    return members;
 	}
 
-
 	@Override
-	public void updateMember(Member oldMember,Member newMember) throws DatabaseException {
-		Connection conn=DBConnection.getConn();
+	public void updateMember(Member oldMember,Member newMember) throws DatabaseException, SQLException {
+		Connection conn=getDataSource().getConnection();
 		String updateMembersQuery="update lms.members set name=?, email=?, mobile=?, address=? where member_id=?";
 		String insertMembersLogQuery="insert into lms.members_log(member_id,name,email,mobile,gender,address) values(?,?,?,?,?,?)";
 		try(PreparedStatement psInsertLog=conn.prepareStatement(insertMembersLogQuery);
@@ -107,9 +141,9 @@ public class MemberDaoImplementation implements MemberDaoInterface {
 	}
 	
 	@Override
-	public Member selectMemberById(int id) throws DatabaseException {
+	public Member selectMemberById(int id) throws DatabaseException, SQLException {
 		Member currentMember=null;
-		Connection conn=DBConnection.getConn();
+		Connection conn=getDataSource().getConnection();
 		String selectOneQuery="select * from lms.members where member_id=?";
 		try(PreparedStatement psSelectOne=conn.prepareStatement(selectOneQuery);) {
 			psSelectOne.setInt(1, id);
@@ -133,8 +167,8 @@ public class MemberDaoImplementation implements MemberDaoInterface {
 	}
 
 	
-	 public boolean deleteMember(int memberId) throws DatabaseException {
-	        Connection conn=DBConnection.getConn();
+	 public boolean deleteMember(int memberId) throws DatabaseException, SQLException {
+	        Connection conn=getDataSource().getConnection();
 	        String selectQuery="select * from lms.members where member_id = ?";
 	        String logInsertQuery="insert into lms.members_log(member_id, name, email, mobile, gender, address) values (?, ?, ?, ?, ?, ?)";
 	        String deleteQuery="delete from lms.members where member_id = ?";

@@ -33,6 +33,7 @@ public class ConnectionPoolingServlet extends HttpServlet {
 		} catch (NamingException | ClassNotFoundException e) {
 
 			System.out.println("Connection Pool Creation Failed...");
+			e.printStackTrace();
 		}
 
 	}

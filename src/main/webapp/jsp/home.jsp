@@ -1,4 +1,4 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,8 +46,8 @@
 <div class="container">
     <h1>LIBRARY MANAGEMENT SYSTEM</h1>
 
-    <a href="../html/bookOptions.html" class="btn">Book Management</a><br>
-    <a href="../jsp/memberManagement.jsp" class="btn">Member Management</a><br>
+    <a href="bookManagement.jsp" class="btn">Book Management</a><br>
+    <a href="memberManagement.jsp" class="btn">Member Management</a><br>
     <a href="issueReturn.jsp" class="btn">Issue & Return Books</a><br>
     <a href="reports.jsp" class="btn">Reports</a>
 </div>

@@ -83,9 +83,11 @@ public class MemberServiceImplementation implements MemberServiceInterface{
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return Pattern.matches(regex, email);
     }
-   public boolean deleteMemberById(int memberId) throws DatabaseException {
+   public boolean deleteMemberById(int memberId) throws DatabaseException, SQLException {
 	    return new MemberDaoImplementation().deleteMember(memberId);
 	}
+
+  
 
 
 
