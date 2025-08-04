@@ -12,7 +12,7 @@
         <div id="options-list">
             <a href="./addBook.jsp">Add Book</a>
             <a href="./updateBookDetails.jsp">Update Book Details</a>
-            <a href="#">View All Books</a>
+            <a href="./viewAllBooks.jsp">View All Books</a>
         </div>
     </main>
 </body>
