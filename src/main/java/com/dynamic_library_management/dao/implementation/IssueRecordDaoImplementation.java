@@ -10,18 +10,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import com.dynamic_library_management.dao.IssueRecordDaoInterface;
 import com.dynamic_library_management.domain.IssueRecord;
 import com.dynamic_library_management.domain.IssueRecordStatus;
-import com.dynamic_library_management.utilities.DBConnection;
+import com.dynamic_library_management.utilities.ConnectionPoolingServlet;
 
 public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
+	
+	private final DataSource dataSource = ConnectionPoolingServlet.getDataSource();
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
 
 	@Override
 	public String issueBook(IssueRecord issue) {
-		Connection conn = DBConnection.getConn();
-
-		try {
+		try (Connection conn = getDataSource().getConnection();) {
 			String memberSql = "SELECT * FROM members WHERE member_id = ?";
 			PreparedStatement memberStmt = conn.prepareStatement(memberSql);
 			memberStmt.setInt(1, issue.getMemberId());
@@ -86,8 +92,7 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 
 	@Override
 	public String returnBook(int memberId, int bookId) {
-		Connection conn = DBConnection.getConn();
-		try {
+		try (Connection conn = getDataSource().getConnection();) {
 			int issueId;
 			String selectSql = "SELECT * FROM issue_records WHERE member_id = ? AND book_id = ? AND status = 'I'";
 			PreparedStatement selectStmt = conn.prepareStatement(selectSql);
@@ -131,8 +136,7 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 	public List<IssueRecord> getOverdueBooks() {
 		List<IssueRecord> overdue = new ArrayList<>();
 		String sql = "SELECT * FROM issue_records WHERE status = 'I' AND issue_date < ?";
-		try  {
-			Connection conn = DBConnection.getConn();
+		try (Connection conn = getDataSource().getConnection();) {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setDate(1, Date.valueOf(LocalDate.now().minusDays(17)));
 			ResultSet rs = pstmt.executeQuery();
@@ -155,8 +159,7 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 	public List<IssueRecord> getAllIssues() {
 		List<IssueRecord> issues = new ArrayList<>();
 		String sql = "SELECT * FROM issue_records";
-		Connection conn = DBConnection.getConn();
-		try  {
+		try (Connection conn = getDataSource().getConnection();) {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -179,8 +182,7 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 	public List<List<String>> getStatusTable() {
 		List<List<String>> activeIssues = new ArrayList<>();
 		String sql = "SELECT m.member_id, m.name, b.title, ir.status as issue_status, b.status as book_status FROM members m JOIN issue_records ir ON m.member_id = ir.member_id JOIN books b ON ir.book_id = b.book_id";
-		try  {
-			Connection conn = DBConnection.getConn();
+		try (Connection conn = getDataSource().getConnection();) {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -200,8 +202,7 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 
 	private void logIssue(int issueId) {
 		String logSql = "INSERT INTO issue_records_log (issue_id, book_id, member_id, status, issue_date, return_date) SELECT * FROM issue_records WHERE issue_records.issue_id = ?";
-		Connection conn = DBConnection.getConn();
-		try {
+		try (Connection conn = getDataSource().getConnection();) {
 			PreparedStatement pstmt = conn.prepareStatement(logSql);
 			pstmt.setInt(1, issueId);
 			pstmt.executeUpdate();
