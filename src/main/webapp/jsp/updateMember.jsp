@@ -66,10 +66,13 @@
         <div class="form-group">
             <label for="memberId">Select Member</label>
             <select name="memberId" onchange="this.form.submit()">
-                <option value="">-- Select Member --</option>
+                <option value="">Select Member</option>
                 <%
                 MemberDaoImplementation dao=new MemberDaoImplementation();
-                    List<Member> allmembers = dao.getAllMembers();
+                List<Member> members = dao.getAllMembers();
+                request.setAttribute("members", members);
+                List<Member> allmembers = (List<Member>) request.getAttribute("members");
+                
                     Member selected = (Member) request.getAttribute("selectedMember");
                     int selectedId = (selected != null) ? selected.getMemberId() : -1;
 
@@ -123,8 +126,8 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-update">Update</button>
-            <a href="home.jsp" class="btn btn-home">Home </a>
-            <a href="memberManagement.jsp" class="btn btn-back">← Back</a>
+            <a href="${pageContext.request.contextPath}/jsp/index.jsp" class="btn btn-home">Home </a>
+            <a href="${pageContext.request.contextPath}/jsp/memberManagement.jsp" class="btn btn-back">← Back</a>
         </div>
         <% } %>
 

@@ -1,9 +1,17 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.dynamic_library_management.domain.Member" %>
-<%@ page import="com.dynamic_library_management.dao.implementation.MemberDaoImplementation"%>
+<%@ page import="com.dynamic_library_management.domain.Book" %>
+<%@ page import="com.dynamic_library_management.services.implementation.BookServiceImplementation"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+
+<%
+List<Book> booksList=new BookServiceImplementation().validateViewAllBooks();
+request.setAttribute("bookslist", booksList);
+%>
+
 <html>
 <head>
+
+
     <title>View All Members</title>
     <style>
         table {
@@ -35,26 +43,18 @@
     </style>
 </head>
 <body>
-    <h2>All Members</h2>
+
+    <h2>All Books</h2>
 
     <%
-        String success = (String) session.getAttribute("successMessage");
-        String error = (String) session.getAttribute("errorMessage");
-        session.removeAttribute("successMessage");
-        session.removeAttribute("errorMessage");
+        String message = (String) request.getAttribute("message");
 
-        if (success != null) {
+        if (message != null) {
     %>
-        <div class="message"><%= success %></div>
+        <div class="message"><%= message %></div>
     <%
-        } else if (error != null) {
-    %>
-        <div class="error"><%= error %></div>
-    <%
-        }
-        MemberDaoImplementation dao=new MemberDaoImplementation();
-       List<Member> members=dao.getAllMembers();
-        if (members != null && !members.isEmpty()) {
+        } 
+        if (booksList != null && !booksList.isEmpty()) {
     %>
 
     <table>
@@ -70,14 +70,14 @@
             </tr>
         </thead>
         <tbody>
-            <% for (Member member : members) { %>
+            <% for (Book book : booksList) { %>
                 <tr>
-                    <td><%= member.getMemberId() %></td>
-                    <td><%= member.getMemberName() %></td>
-                    <td><%= member.getMemberMail() %></td>
-                    <td><%= member.getMobileNo() %></td>
-                    <td><%= member.getGender() %></td>
-                    <td><%= member.getMemberAddress() %></td>
+                    <td><%= book.getBookId() %></td>
+                    <td><%= book.getTitle() %></td>
+                    <td><%= book.getAuthor() %></td>
+                    <td><%= book.getCategory().toString() %></td>
+                    <td><%= book.getStatus().toString() %></td>
+                    <td><%= book.getAvailability().toString() %></td>
                     <%-- <td>
                         <form method="post" action="/deleteMember" style="display:inline;">
                             <input type="hidden" name="memberId" value="<%= member.getMemberId() %>"/>
@@ -90,11 +90,11 @@
     </table>
 
     <% } else { %>
-        <div>No members found.</div>
+        <div>No Books found.</div>
     <% } %>
 
     <br>
-    <a href="${pageContext.request.contextPath}/jsp/home.jsp">Home</a> |
-    <a href="v${pageContext.request.contextPath}/jsp/memberManagement.jsp">Back</a>
+    <a href="home.jsp">Home</a> |
+    <a href="memberManagement.jsp">Back</a>
 </body>
 </html>

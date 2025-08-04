@@ -67,7 +67,7 @@
 </head>
 <body>
 
-<a href="home.jsp" class="back-btn">← Back</a>
+<a href="${pageContext.request.contextPath}/jsp/index.jsp" class="back-btn">← Back</a>
 
 <div class="container">
     <h1>MEMBER MANAGEMENT OPTIONS</h1>

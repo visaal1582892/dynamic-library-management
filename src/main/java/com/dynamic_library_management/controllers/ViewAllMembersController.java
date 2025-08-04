@@ -14,7 +14,7 @@ import com.dynamic_library_management.domain.Member;
 import com.dynamic_library_management.exceptions.DatabaseException;
 import com.dynamic_library_management.services.implementation.MemberServiceImplementation;
 
-@WebServlet("/viewAllMembers")
+@jakarta.servlet.annotation.WebServlet("/viewAllMembers")
 public class ViewAllMembersController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
