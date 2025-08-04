@@ -46,7 +46,7 @@
 <div class="container">
     <h1>LIBRARY MANAGEMENT SYSTEM</h1>
 
-    <a href="bookManagement.jsp" class="btn">Book Management</a><br>
+    <a href="bookOptions.jsp" class="btn">Book Management</a><br>
     <a href="memberManagement.jsp" class="btn">Member Management</a><br>
     <a href="issueReturn.jsp" class="btn">Issue & Return Books</a><br>
     <a href="reports.jsp" class="btn">Reports</a>
