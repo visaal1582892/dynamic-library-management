@@ -46,8 +46,8 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 	public List<IssueRecord> getOverdueBooks() {
 		//return dao.getOverdueBooks();
 		List<IssueRecord> overdue = new IssueRecordDaoImplementation().getAllIssues().stream()
-				.filter(b -> b.getReturnDate()!=null)
-				.filter(b -> b.getReturnDate().isBefore(LocalDate.now().minusDays(17)))
+				.filter(b -> b.getReturnDate()==null)
+				.filter(b -> b.getIssueDate().isBefore(LocalDate.now().minusDays(0)))
 				.collect(Collectors.toList());
 		System.out.println(overdue);
 		return overdue;

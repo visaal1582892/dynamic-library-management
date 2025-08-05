@@ -4,7 +4,6 @@ import com.dynamic_library_management.dao.implementation.MemberDaoImplementation
 import com.dynamic_library_management.domain.Member;
 import com.dynamic_library_management.exceptions.DatabaseException;
 
-<<<<<<< HEAD
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,14 +11,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-=======
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
->>>>>>> b43a048b1da2dcea6c15ea504e525c0007404255
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/updateMemberController")
 public class UpdateMemberController extends HttpServlet {
