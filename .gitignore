@@ -5,3 +5,4 @@ context.xml
 target/
 *.class
 /build/
+/bin/
