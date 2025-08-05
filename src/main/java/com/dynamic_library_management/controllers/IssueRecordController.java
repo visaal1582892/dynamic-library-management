@@ -1,7 +1,6 @@
 package com.dynamic_library_management.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,15 +27,11 @@ public class IssueRecordController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		System.out.println("inside get");
 		try {
-
 			List<Member> members = new MemberDaoImplementation().getAllMembers();
-			System.out.println("Members fetched: " + members.size());
 			request.setAttribute("members", members);
 
 			List<Book> books = new BookDaoImplementation().selectAllBooks();
-			System.out.println("Books fetched: " + books.size());
 			request.setAttribute("books", books);
 
 			RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
@@ -44,54 +39,43 @@ public class IssueRecordController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("status", "error");
+			request.setAttribute("message", "Failed to load issue form.");
+			request.getRequestDispatcher("jsp/issueBook.jsp").forward(request, response);
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		System.out.println("inside post");
-//		response.setContentType("text/html");
-//		PrintWriter out = response.getWriter();
 
 		int memberId = Integer.parseInt(request.getParameter("member"));
 		int bookId = Integer.parseInt(request.getParameter("book"));
 
-//		out.println("<p>Selected Member ID: " + memberId + "</p>");
-//		out.println("<p>Selected Book ID: " + bookId + "</p>");
-
 		IssueRecord issue = new IssueRecord(bookId, memberId, LocalDate.now());
 		String print_message = new IssueRecordDaoImplementation().issueBook(issue);
-		//out.println("<h2>" + print_message + "</h2>");
-		
-        List<Member> members;
-        List<Book> books;
+
 		try {
-			
-	        members = new MemberDaoImplementation().getAllMembers();
-			books = new BookDaoImplementation().selectAllBooks();
-			
+			List<Member> members = new MemberDaoImplementation().getAllMembers();
+			List<Book> books = new BookDaoImplementation().selectAllBooks();
+
 			request.setAttribute("members", members);
-	        request.setAttribute("books", books);
-	        request.setAttribute("message", print_message);
+			request.setAttribute("books", books);
+			request.setAttribute("message", print_message);
 
-	        System.out.println("Forwarding to JSP with message: " + print_message);
-	        
-	        if(print_message == "Book issued successfully") {
-	        	request.setAttribute("status", "success");
-	        }else {
-	        	request.setAttribute("status", "error");
-	        }
-	        
-	        RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
-	        rd.forward(request, response);
-	        
-		} catch (DatabaseException e) {
+			if ("Book issued successfully".equals(print_message)) {
+				request.setAttribute("status", "success");
+			} else {
+				request.setAttribute("status", "error");
+			}
+
+			RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
+			rd.forward(request, response);
+
+		} catch (DatabaseException | SQLException e) {
 			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			request.setAttribute("status", "error");
+			request.setAttribute("message", "An error occurred while issuing the book.");
+			request.getRequestDispatcher("jsp/issueBook.jsp").forward(request, response);
 		}
-        
 	}
-
 }

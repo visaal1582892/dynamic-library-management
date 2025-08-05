@@ -8,15 +8,28 @@
     <title>Update Member</title>
     <style>
         body {
-            background: linear-gradient(to bottom, #e3f2fd, #ffffff);
-            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
         .top-buttons {
+            position: absolute;
+            top: 20px;
+            width: 100%;
             display: flex;
-            justify-content: flex-end;
-            padding: 20px;
-            gap: 10px;
+            justify-content: space-between;
+            padding: 0 20px;
         }
 
         .btn-top {
@@ -35,55 +48,74 @@
         }
 
         .container {
-            width: 760px;
-            margin: 0 auto;
-            padding-top: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 550px;
         }
 
         h1 {
             text-align: center;
-            color: #2090bc;
+            color: #0d47a1;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #90caf9;
+            display: inline-block;
+            padding-bottom: 10px;
+            font-size: 28px;
             font-style: italic;
-            text-decoration: underline;
-            font-size: 30px;
         }
 
         .form-group {
-            margin: 20px;
-            font-size: 20px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            font-style: italic;
-            font-size: 20px;
+            font-weight: bold;
+            font-size: 16px;
             margin-bottom: 5px;
         }
 
-        input, select {
-            width: 60%;
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
             padding: 10px;
-            border-radius: 10px;
             font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+
+        input[readonly] {
+            background-color: #f3f3f3;
         }
 
         .btn {
-            margin: 15px 5px;
-            padding: 10px 20px;
-            border-radius: 10px;
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
             font-size: 16px;
+            border-radius: 8px;
+            border: none;
             cursor: pointer;
+            background-color: #64b5f6;
+            color: white;
+            transition: background-color 0.3s ease;
         }
 
-        .btn-update { background-color: lightblue; }
+        .btn:hover {
+            background-color: #42a5f5;
+        }
+
         .message {
             text-align: center;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: bold;
             padding: 10px;
-            border-radius: 10px;
-            margin: 10px auto;
-            width: fit-content;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
 
         .success {
@@ -110,7 +142,7 @@
     <!-- Success or Error Message -->
     <%
         String msg = (String) request.getAttribute("message");
-        String status = (String) request.getAttribute("status"); // "success" or "error"
+        String status = (String) request.getAttribute("status");
         if (msg != null && !msg.isEmpty()) {
     %>
         <div class="message <%= "success".equalsIgnoreCase(status) ? "success" : "error" %>">
@@ -190,7 +222,7 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-update">Update</button>
+            <button type="submit" class="btn">Update</button>
         </div>
         <%
             }
