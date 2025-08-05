@@ -7,24 +7,27 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dynamic_library_management.dao.implementation.ReportsDaoImplementation;
-import com.dynamic_library_management.domain.IssueRecord;
 
-
-@WebServlet("/overdueRecords")
-public class OverdueRecordsController extends HttpServlet {
+@WebServlet("/activeIssuedRecords")
+public class ActiveIssuedRecordsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 
-			List<IssueRecord> overdue = new ReportsDaoImplementation().getOverdueBooks();
+			List<String[]> activeIssues = new ArrayList<>();
+			List<List<String>> raw = new ReportsDaoImplementation().getActiveIssuedBooks();
+			for (List<String> row : raw) {
+			    activeIssues.add(row.toArray(new String[0]));
+			}
 					
-			request.setAttribute("overdue", overdue);
+			request.setAttribute("activeIssues", activeIssues);
 
-			RequestDispatcher rd = request.getRequestDispatcher("jsp/overdueRecords.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("jsp/activeIssuedRecords.jsp");
 			rd.forward(request, response);
 
 		} catch (Exception e) {

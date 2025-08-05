@@ -39,6 +39,10 @@ h1 {
 </head>
 <body>
 <h1>Reports</h1>
-	<a href="../overdueRecords" class="btn">Overdue Books</a>
+	<a href="../overdueRecords" class="btn">List of Overdue Books</a>
+	<br>
+	<a href="../categoryCount" class="btn">Count of books per category </a>
+	<br>
+	<a href="../activeIssuedRecords" class="btn">List of members with active issued books </a>
 </body>
 </html>
