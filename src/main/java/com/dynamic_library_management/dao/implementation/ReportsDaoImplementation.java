@@ -16,10 +16,8 @@ import com.dynamic_library_management.domain.Book;
 import com.dynamic_library_management.domain.IssueRecord;
 import com.dynamic_library_management.exceptions.DatabaseException;
 import com.dynamic_library_management.services.implementation.ReportsServiceImplementation;
-import com.dynamic_library_management.utilities.DBConnection;
 
 public class ReportsDaoImplementation implements ReportsDaoInterface {
-	static IssueRecordDaoInterface dao = new IssueRecordDaoImplementation();
 
 	@Override
 	public Map<Object, Long> countOfBooksPerCategory() {
@@ -47,7 +45,8 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 
 	public List<IssueRecord> getOverdueBooks() {
 		//return dao.getOverdueBooks();
-		List<IssueRecord> overdue = dao.getAllIssues().stream()
+		List<IssueRecord> overdue = new IssueRecordDaoImplementation().getAllIssues().stream()
+				.filter(b -> b.getReturnDate()!=null)
 				.filter(b -> b.getReturnDate().isBefore(LocalDate.now().minusDays(17)))
 				.collect(Collectors.toList());
 		System.out.println(overdue);
@@ -56,7 +55,7 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 
 	@Override
 	public List<List<String>> getActiveIssuedBooks() {
-		List<List<String>> data =  dao.getStatusTable().stream()
+		List<List<String>> data =  new IssueRecordDaoImplementation().getStatusTable().stream()
 				.filter(row -> row.get(4).equals("A") && row.get(3).equals("I"))
 				.collect(Collectors.toList());
 		System.out.println(data);
