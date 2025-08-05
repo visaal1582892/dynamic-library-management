@@ -4,12 +4,15 @@ import com.dynamic_library_management.dao.implementation.MemberDaoImplementation
 import com.dynamic_library_management.domain.Member;
 import com.dynamic_library_management.exceptions.DatabaseException;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/updateMemberController")
 public class UpdateMemberController extends HttpServlet {
@@ -19,10 +22,7 @@ public class UpdateMemberController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<Member> members = dao.getAllMembers();
-            System.out.println("Loaded members: " + (members != null ? members.size() : "null"));
-
-            request.setAttribute("members", members);
+           
 
             String idStr = request.getParameter("memberId");
             if (idStr != null && !idStr.isEmpty()) {
@@ -31,7 +31,7 @@ public class UpdateMemberController extends HttpServlet {
                 request.setAttribute("selectedMember", selected);
             }
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
             dispatcher.forward(request, response);
 
         } catch (SQLException | DatabaseException e) {
@@ -54,21 +54,23 @@ public class UpdateMemberController extends HttpServlet {
             Member newMember = new Member(memberId, name, email, mobile, gender, address);
 
             dao.updateMember(oldMember, newMember);
+            request.setAttribute("message", "Member updated successfully!");
+            request.setAttribute("status", "success");
 
-            request.setAttribute("message", " Member updated successfully.");
+
             request.setAttribute("selectedMember", newMember);
             request.setAttribute("members", dao.getAllMembers());
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
             dispatcher.forward(request, response);
 
         } catch (SQLException | DatabaseException | NumberFormatException e) {
-            request.setAttribute("message", "Update failed: " + e.getMessage());
+            request.setAttribute("message", "Failed to update member. Please try again.");
+            request.setAttribute("status", "error");
             try {
                 request.setAttribute("selectedMember", dao.selectMemberById(Integer.parseInt(request.getParameter("memberId"))));
                 request.setAttribute("members", dao.getAllMembers());
             } catch (Exception ignored) {}
-            RequestDispatcher dispatcher = request.getRequestDispatcher("updateMember.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
             dispatcher.forward(request, response);
         }
     }

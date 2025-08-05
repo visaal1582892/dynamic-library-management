@@ -94,7 +94,7 @@
     <% } %>
 
     <br>
-    <a href="home.jsp">Home</a> |
-    <a href="memberManagement.jsp">Back</a>
+    <a href="${pageContext.request.contextPath}/jsp/index.jsp">Home</a> |
+    <a href="${pageContext.request.contextPath}/jsp/memberManagement.jsp">Back</a>
 </body>
 </html>
