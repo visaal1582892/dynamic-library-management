@@ -39,7 +39,7 @@ public class IssueRecordController extends HttpServlet {
 			System.out.println("Books fetched: " + books.size());
 			request.setAttribute("books", books);
 
-			RequestDispatcher rd = request.getRequestDispatcher("dynamic-library-management/jsp/issueBook.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
 			rd.forward(request, response);
 
 		} catch (Exception e) {
@@ -84,7 +84,7 @@ public class IssueRecordController extends HttpServlet {
 				request.setAttribute("status", "error");
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher("dynamic-library-management/jsp/issueBook.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
 			rd.forward(request, response);
 
 		} catch (DatabaseException e) {

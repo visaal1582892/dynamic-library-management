@@ -39,7 +39,7 @@ h1 {
 </head>
 <body>
 	<h1>Issue / Return Book</h1>
-	<a href="../issueRecord" class="btn">Issue Book</a>
+	<a href="${pageContext.request.contextPath}/issueRecord" class="btn">Issue Book</a>
 	<br>
 	<a href="${pageContext.request.contextPath}/returnRecord" class="btn">Return Book</a>
 	<br>

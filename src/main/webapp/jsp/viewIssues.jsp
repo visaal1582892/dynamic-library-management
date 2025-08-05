@@ -8,24 +8,38 @@
 <title>All Issues</title>
 <style>
         body {
-            background: linear-gradient(to bottom, #e3f2fd, #ffffff);
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            padding-top: 40px;
+            background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+            font-family: Arial, sans-serif;
+            padding: 20px;
         }
-
         h1 {
-            color: #2090bc;
-            font-size: 33px;
+            text-align: center;
+            font-size: 32px;
             font-style: italic;
             font-weight: bold;
-            text-decoration: underline;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #90caf9;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #bbdefb;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 	<h1>All Issues</h1>
-	<table border="3" style="margin: 0px auto;">
+	<table>
 		<tr>
 			<th>Issue ID</th>
 			<th>Book ID</th>
