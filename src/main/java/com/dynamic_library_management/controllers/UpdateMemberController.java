@@ -51,16 +51,18 @@ public class UpdateMemberController extends HttpServlet {
             Member newMember = new Member(memberId, name, email, mobile, gender, address);
 
             dao.updateMember(oldMember, newMember);
+            request.setAttribute("message", "Member updated successfully!");
+            request.setAttribute("status", "success");
 
-            request.setAttribute("message", " Member updated successfully.");
+
             request.setAttribute("selectedMember", newMember);
             request.setAttribute("members", dao.getAllMembers());
-
             RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
             dispatcher.forward(request, response);
 
         } catch (SQLException | DatabaseException | NumberFormatException e) {
-            request.setAttribute("message", "Update failed: " + e.getMessage());
+            request.setAttribute("message", "Failed to update member. Please try again.");
+            request.setAttribute("status", "error");
             try {
                 request.setAttribute("selectedMember", dao.selectMemberById(Integer.parseInt(request.getParameter("memberId"))));
                 request.setAttribute("members", dao.getAllMembers());
