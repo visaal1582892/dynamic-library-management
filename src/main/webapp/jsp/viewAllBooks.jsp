@@ -119,11 +119,11 @@
     %>
 </table>
 
-<form action="bookOptions" method="get">
+<form action="${pageContext.request.contextPath}/jsp/bookOptions.jsp" method="get">
     <button type="submit" class="btn btn-back">← Back</button>
 </form>
 
-<form action="home" method="get">
+<form action="${pageContext.request.contextPath}/jsp/index.jsp" method="get">
     <button type="submit" class="btn btn-home">Home 🏠</button>
 </form>
 

@@ -41,8 +41,8 @@ h1 {
 	<h1>Issue / Return Book</h1>
 	<a href="../issueRecord" class="btn">Issue Book</a>
 	<br>
-	<a href="../returnRecord" class="btn">Return Book</a>
+	<a href="${pageContext.request.contextPath}/returnRecord" class="btn">Return Book</a>
 	<br>
-	<a href="../viewIssues" class="btn">View All Issues</a>
+	<a href="${pageContext.request.contextPath}/viewIssues" class="btn">View All Issues</a>
 </body>
 </html>
