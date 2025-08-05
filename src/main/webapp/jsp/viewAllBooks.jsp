@@ -1,97 +1,131 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.dynamic_library_management.domain.Book" %>
-<%@ page import="com.dynamic_library_management.services.implementation.BookServiceImplementation"%>
-<%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
-List<Book> booksList=new BookServiceImplementation().validateViewAllBooks();
-request.setAttribute("bookslist", booksList);
+    String message = (String) request.getAttribute("message");
+    String messageColor = (String) request.getAttribute("messageColor");
+    List<Book> books = (List<Book>) request.getAttribute("books");
 %>
 
+<!DOCTYPE html>
 <html>
 <head>
-    <title>View All Members</title>
+    <title>All Books</title>
     <style>
+        body {
+            background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            font-style: italic;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .message {
+            text-align: center;
+            font-size: 18px;
+            color: <%= messageColor != null ? messageColor : "black" %>;
+            margin-bottom: 20px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
         }
         th, td {
-            border: 1px solid #aaa;
-            padding: 10px;
-            text-align: left;
+            border: 1px solid #90caf9;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #bbdefb;
+            font-weight: bold;
+        }
+        .btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
         }
         .btn-delete {
             background-color: #ef5350;
             color: white;
+        }
+        .btn-back, .btn-home {
+            padding: 8px 16px;
             border: none;
-            padding: 5px 10px;
+            border-radius: 8px;
             font-weight: bold;
-            border-radius: 4px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
         }
-        .message {
-            color: green;
-            font-weight: bold;
+        .btn-back {
+            left: 20px;
+            background-color: #bbdefb;
+            color: #0d47a1;
         }
-        .error {
-            color: red;
-            font-weight: bold;
+        .btn-home {
+            right: 20px;
+            background-color: #c8e6c9;
+            color: #1b5e20;
         }
     </style>
 </head>
 <body>
-    <h2>All Books</h2>
 
+<h1>ALL BOOKS</h1>
+
+<div class="message"><%= message != null ? message : "" %></div>
+
+<table>
+    <tr>
+        <th>Book ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Availability</th>
+        <th>Actions</th>
+    </tr>
     <%
-        String message = (String) request.getAttribute("message");
-
-        if (message != null) {
+        if (books != null && !books.isEmpty()) {
+            for (Book book : books) {
     %>
-        <div class="message"><%= message %></div>
+    <tr>
+        <td><%= book.getBookId() %></td>
+        <td><%= book.getTitle() %></td>
+        <td><%= book.getAuthor() %></td>
+        <td><%= book.getCategory() %></td>
+        <td><%= book.getStatus() %></td>
+        <td><%= book.getAvailability() %></td>
+        <td>
+            <form method="post" action="deleteBookController">
+                <input type="hidden" name="bookId" value="<%= book.getBookId() %>" />
+                <button class="btn btn-delete" type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
     <%
-        } 
-        if (booksList != null && !booksList.isEmpty()) {
+            }
+        }
     %>
+</table>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Gender</th>
-                <th>Address</th>
-              <!--   <th>Action</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            <% for (Book book : booksList) { %>
-                <tr>
-                    <td><%= book.getBookId() %></td>
-                    <td><%= book.getTitle() %></td>
-                    <td><%= book.getAuthor() %></td>
-                    <td><%= book.getCategory().toString() %></td>
-                    <td><%= book.getStatus().toString() %></td>
-                    <td><%= book.getAvailability().toString() %></td>
-                    <%-- <td>
-                        <form method="post" action="/deleteMember" style="display:inline;">
-                            <input type="hidden" name="memberId" value="<%= member.getMemberId() %>"/>
-                            <input type="submit" class="btn-delete" value="Delete"/>
-                        </form>
-                    </td> --%>
-                </tr>
-            <% } %>
-        </tbody>
-    </table>
+<form action="bookOptions" method="get">
+    <button type="submit" class="btn btn-back">← Back</button>
+</form>
 
-    <% } else { %>
-        <div>No Books found.</div>
-    <% } %>
+<form action="home" method="get">
+    <button type="submit" class="btn btn-home">Home 🏠</button>
+</form>
 
-    <br>
-    <a href="home.jsp">Home</a> |
-    <a href="memberManagement.jsp">Back</a>
 </body>
 </html>

@@ -59,7 +59,7 @@ public class AddBookController extends HttpServlet {
 			setMessage(e.getMessage());
 //			ResponseHandler.showResponse(message, e.getMessage(), Color.RED);
 		} finally {
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/response.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/addBook.jsp");
 			request.setAttribute("message", getMessage());
 			request.setAttribute("success", isSuccess());
 			if (isSuccess()) {
