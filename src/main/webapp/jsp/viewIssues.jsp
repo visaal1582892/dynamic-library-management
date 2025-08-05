@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>All Issues</title>
 <style>
+
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
@@ -82,6 +83,34 @@
         th, td {
             padding: 8px;
             font-size: 14px;
+        body {
+            background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            font-style: italic;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #90caf9;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #bbdefb;
+            font-weight: bold;
+
         }
         h1 {
             font-size: 24px;
@@ -94,6 +123,7 @@
 </style>
 </head>
 <body>
+
 
 <div class="container">
     <h1>All Issues</h1>
@@ -135,6 +165,7 @@
         <a href="${pageContext.request.contextPath}/jsp/issueReturn.jsp">Back</a>
     </div>
 </div>
+
 
 </body>
 </html>

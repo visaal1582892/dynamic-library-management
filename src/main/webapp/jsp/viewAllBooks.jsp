@@ -91,6 +91,8 @@
             margin-top: 20px;
             margin-bottom: 40px;
         }
+        
+
 
         .nav-links a {
             text-decoration: none;
@@ -102,11 +104,13 @@
             border-radius: 5px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+        
 
         .nav-links a:hover {
             background-color: #00796b;
             color: white;
         }
+        
 
         /* Responsive */
         @media (max-width: 600px) {
@@ -114,9 +118,11 @@
                 padding: 8px;
                 font-size: 14px;
             }
+            
             h1 {
                 font-size: 24px;
             }
+            
             .nav-links a {
                 padding: 6px 12px;
                 font-size: 14px;
@@ -179,12 +185,16 @@
         </tbody>
     </table>
 
+
    
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/jsp/index.jsp">Home</a>
             <a href="${pageContext.request.contextPath}/jsp/bookOptions.jsp">Back</a>
         </div>
 </div>
+
+
+
 
 </body>
 </html>

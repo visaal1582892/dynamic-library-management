@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Members with Active Issued Books</title>
 <style>
+
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
@@ -114,8 +116,20 @@
                     <td><c:out value="${issue[0]}" /></td>
                     <td><c:out value="${issue[1]}" /></td>
                     <td><c:out value="${issue[2]}" /></td>
-                    <td><c:out value="${issue[3]}" /></td>
-                    <td><c:out value="${issue[4]}" /></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${issue[3] == 'I'}">Issued</c:when>
+                            <c:when test="${issue[3] == 'R'}">Returned</c:when>
+                            <c:otherwise>Unknown</c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${issue[4] == 'I'}">Inactive</c:when>
+                            <c:when test="${issue[4] == 'A'}">Active</c:when>
+                            <c:otherwise>Unknown</c:otherwise>
+                        </c:choose>
+                    </td>
                 </tr>
             </c:forEach>
             <c:if test="${empty activeIssues}">
