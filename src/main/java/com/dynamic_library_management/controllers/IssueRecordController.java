@@ -22,77 +22,76 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/issueRecord")
 public class IssueRecordController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Fetch all members and books to display on the issue book form
+            List<Member> members = new MemberDaoImplementation().getAllMembers();
+            List<Book> books = new BookDaoImplementation().selectAllBooks();
 
-		System.out.println("inside get");
-		try {
+            request.setAttribute("members", members);
+            request.setAttribute("books", books);
 
-			List<Member> members = new MemberDaoImplementation().getAllMembers();
-			System.out.println("Members fetched: " + members.size());
-			request.setAttribute("members", members);
+            // Forward to issueBook.jsp to display the form
+            RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
+            rd.forward(request, response);
 
-			List<Book> books = new BookDaoImplementation().selectAllBooks();
-			System.out.println("Books fetched: " + books.size());
-			request.setAttribute("books", books);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("status", "error");
+            request.setAttribute("message", "Failed to load issue form.");
+            request.getRequestDispatcher("jsp/issueBook.jsp").forward(request, response);
+        }
+    }
 
-			RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
-			rd.forward(request, response);
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            int memberId = Integer.parseInt(request.getParameter("member"));
+            int bookId = Integer.parseInt(request.getParameter("book"));
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+            IssueRecord issue = new IssueRecord(bookId, memberId, LocalDate.now());
+            String print_message = new IssueRecordDaoImplementation().issueBook(issue);
 
-		System.out.println("inside post");
-//		response.setContentType("text/html");
-//		PrintWriter out = response.getWriter();
+            // After issuing, reload members and books to show in the form again
+            List<Member> members = new MemberDaoImplementation().getAllMembers();
+            List<Book> books = new BookDaoImplementation().selectAllBooks();
 
-		int memberId = Integer.parseInt(request.getParameter("member"));
-		int bookId = Integer.parseInt(request.getParameter("book"));
+            request.setAttribute("members", members);
+            request.setAttribute("books", books);
+            request.setAttribute("message", print_message);
 
-//		out.println("<p>Selected Member ID: " + memberId + "</p>");
-//		out.println("<p>Selected Book ID: " + bookId + "</p>");
+            if ("Book issued successfully".equals(print_message)) {
+                request.setAttribute("status", "success");
+            } else {
+                request.setAttribute("status", "error");
+            }
 
-		IssueRecord issue = new IssueRecord(bookId, memberId, LocalDate.now());
-		String print_message = new IssueRecordDaoImplementation().issueBook(issue);
-		// out.println("<h2>" + print_message + "</h2>");
+            RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
+            rd.forward(request, response);
 
-		List<Member> members;
-		List<Book> books;
-		try {
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            request.setAttribute("status", "error");
+            request.setAttribute("message", "Invalid member or book ID.");
+            request.getRequestDispatcher("jsp/issueBook.jsp").forward(request, response);
 
-			members = new MemberDaoImplementation().getAllMembers();
-			books = new BookDaoImplementation().selectAllBooks();
+        } catch (DatabaseException | SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("status", "error");
+            request.setAttribute("message", "An error occurred while issuing the book.");
+            request.getRequestDispatcher("jsp/issueBook.jsp").forward(request, response);
 
-			request.setAttribute("members", members);
-			request.setAttribute("books", books);
-			request.setAttribute("message", print_message);
-
-			System.out.println("Forwarding to JSP with message: " + print_message);
-
-			if (print_message == "Book issued successfully") {
-				request.setAttribute("status", "success");
-			} else {
-				request.setAttribute("status", "error");
-			}
-
-			RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
-			rd.forward(request, response);
-
-		} catch (DatabaseException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("status", "error");
+            request.setAttribute("message", "Unexpected error occurred.");
+            request.getRequestDispatcher("jsp/issueBook.jsp").forward(request, response);
+        }
+    }
 }

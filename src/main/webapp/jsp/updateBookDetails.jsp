@@ -29,86 +29,101 @@
     <title>Update Book</title>
     <style>
         body {
-            background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+            margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .container {
-            width: 700px;
-            margin: 60px auto;
-            padding: 40px;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #2090bc;
-            font-size: 30px;
-            font-style: italic;
-            text-decoration: underline;
-        }
-
-        label {
-            display: block;
-            margin-top: 20px;
-            font-size: 18px;
-            font-style: italic;
-        }
-
-        input[type="text"], select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-        }
-
-        .submit-btn {
-            display: block;
-            margin: 30px auto 0;
-            padding: 12px 25px;
-            background-color: lightblue;
-            color: #003366;
-            font-size: 18px;
-            font-weight: bold;
-            font-style: italic;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            box-shadow: 2px 2px 5px gray;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
         .back-btn {
             position: absolute;
             top: 20px;
             left: 20px;
-            background-color: #bbdefb;
+            background-color: rgba(255, 255, 255, 0.8);
             color: #0d47a1;
             padding: 8px 16px;
             font-weight: bold;
             border: none;
             border-radius: 8px;
             text-decoration: none;
+            transition: background-color 0.3s ease;
+            z-index: 10;
         }
 
         .back-btn:hover {
-            background-color: #90caf9;
+            background-color: #bbdefb;
+        }
+
+        .container {
+            width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 26px;
+            color: #0d47a1;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #90caf9;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-size: 16px;
+            color: #0d47a1;
+            font-weight: bold;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            padding: 12px;
+            background-color: #64b5f6;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #42a5f5;
         }
     </style>
 </head>
 <body>
 
-<a href="${pageContext.request.contextPath}/jsp/bookManagement.jsp" class="back-btn">← Back</a>
+<a href="${pageContext.request.contextPath}/jsp/bookOptions.jsp" class="back-btn">← Back</a>
 
 <div class="container">
-    <h1>UPDATE BOOK</h1>
+    <h1>Update Book</h1>
 
     <form action="${pageContext.request.contextPath}/updateBookDetailsController" method="post">
         <!-- Book Selection -->
@@ -146,7 +161,6 @@
     </form>
 </div>
 
-<!-- JavaScript to dynamically populate form -->
 <script>
     const bookMap = new Map();
 
