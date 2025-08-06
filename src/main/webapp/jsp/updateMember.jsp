@@ -160,7 +160,7 @@
 <div class="container">
 
     <form action="/dynamic-library-management/updateMemberController" method="get">
-        <h1>✏️ Update Member</h1>
+        <h1>✏ Update Member</h1>
 
         <div class="form-group">
             <label for="memberId">Select Member</label>

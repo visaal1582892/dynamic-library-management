@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,10 +8,10 @@
     body {
         margin: 0;
         padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: Arial, sans-serif;
         background: 
             linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-            url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80');
+            url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80'); 
         background-size: cover;
         background-position: center;
         height: 100vh;
@@ -22,78 +21,72 @@
         position: relative;
     }
 
+    .back-btn {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        padding: 6px 12px;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #0d47a1;
+        font-size: 14px;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        z-index: 10;
+    }
+
+    .back-btn:hover {
+        background-color: #bbdefb;
+    }
+
     .container {
         background: rgba(255, 255, 255, 0.95);
-        padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        width: 500px;
+        padding: 25px 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         text-align: center;
+        width: 360px;
     }
 
     h1 {
+        font-size: 22px;
         color: #0d47a1;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         border-bottom: 2px solid #90caf9;
         display: inline-block;
-        padding-bottom: 10px;
-        font-style: italic;
-        font-weight: bold;
-        font-size: 33px;
+        padding-bottom: 8px;
     }
 
     .btn {
         display: block;
-        margin: 20px auto;
-        padding: 15px 60px;
-        font-size: 18px;
+        margin: 10px auto;
+        padding: 10px 24px;
+        font-size: 14px;
         background-color: #64b5f6;
+        color: white;
         border: none;
-        border-radius: 8px;
-        box-shadow: 2px 2px 5px gray;
-        font-style: italic;
+        border-radius: 6px;
         cursor: pointer;
         text-decoration: none;
-        color: white;
         transition: background-color 0.3s ease;
-        width: fit-content;
-        min-width: 280px;
     }
 
     .btn:hover {
         background-color: #42a5f5;
-        color: white;
-        text-decoration: none;
     }
-    
-    .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 8px 16px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #0d47a1;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            z-index: 10;
-        }
-
-        .back-btn:hover {
-            background-color: #bbdefb;
-        }
 </style>
 </head>
 <body>
+
 <a href="${pageContext.request.contextPath}/jsp/index.jsp" class="back-btn">← Back</a>
 
 <div class="container">
     <h1>Reports</h1>
-    <a href="../overdueRecords" class="btn">List of Overdue Books</a>
-    <a href="../categoryCount" class="btn">Count of Books per Category</a>
-    <a href="../activeIssuedRecords" class="btn">List of Members with Active Issued Books</a>
+    <a href="../overdueRecords" class="btn">📅 List of Overdue Books</a>
+    <a href="../categoryCount" class="btn">📚 Count of Books per Category</a>
+    <a href="../activeIssuedRecords" class="btn">👤 Members with Active Issued Books</a>
 </div>
 
 </body>

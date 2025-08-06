@@ -79,26 +79,7 @@
         background-color: #42a5f5;
     }
 
-    @media (max-width: 768px) {
-        .container {
-            padding: 20px;
-            max-width: 90%;
-        }
-
-        h1 {
-            font-size: 16px;
-        }
-
-        .btn {
-            font-size: 12px;
-            padding: 8px 16px;
-        }
-
-        .back-btn {
-            font-size: 11px;
-            padding: 5px 10px;
-        }
-    }
+   
 </style>
 </head>
 <body>

@@ -130,21 +130,7 @@ tr:hover {
 		background-color: #d32f2f;
 	}
 
-@media ( max-width : 768px) {
-	table {
-		font-size: 12px;
-	}
-	th, td {
-		padding: 8px 5px;
-	}
-	h1 {
-		font-size: 20px;
-	}
-	.nav-links a {
-		padding: 6px 12px;
-		font-size: 12px;
-	}
-}
+
 </style>
 </head>
 <body>

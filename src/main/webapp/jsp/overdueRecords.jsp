@@ -5,44 +5,47 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Overdue Records</title>
+<title>📅 Overdue Records</title>
 <style>
-
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background: linear-gradient(to right, #e0f7fa, #ffffff);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url('https://images.unsplash.com/photo-1535909339361-9b2801b6b90e?auto=format&fit=crop&w=1470&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 50px auto;
+        background: rgba(255, 255, 255, 0.96);
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        overflow-x: auto;
     }
 
     h1 {
         text-align: center;
-        margin-top: 30px;
-        color: #2c3e50;
-        font-style: italic;
-        font-weight: bold;
-        text-decoration: underline;
-        font-size: 33px;
-    }
-
-    .container {
-        width: 90%;
-        max-width: 1200px;
-        margin: 30px auto 60px;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        font-size: 26px;
+        color: #0d47a1;
+        border-bottom: 2px solid #90caf9;
+        padding-bottom: 10px;
+        margin-bottom: 25px;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        font-size: 14px;
+        margin-top: 10px;
     }
 
     th, td {
-        padding: 12px;
+        padding: 10px 8px;
         border-bottom: 1px solid #ccc;
         text-align: left;
     }
@@ -53,90 +56,58 @@
     }
 
     tr:hover {
-        background-color: #f1f1f1;
+        background-color: #f5f5f5;
     }
 
     .nav-links {
         text-align: center;
-        margin-top: 20px;
-        margin-bottom: 40px;
+        margin-top: 30px;
     }
 
     .nav-links a {
         text-decoration: none;
-        color: #00796b;
+        color: #0d47a1;
+        font-size: 14px;
         font-weight: bold;
         margin: 0 10px;
         padding: 8px 16px;
-        border: 2px solid #00796b;
-        border-radius: 5px;
+        border: 2px solid #0d47a1;
+        border-radius: 6px;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .nav-links a:hover {
-        background-color: #00796b;
+        background-color: #0d47a1;
         color: white;
     }
 
-    /* Responsive */
-    @media (max-width: 600px) {
-        th, td {
-            padding: 8px;
-            font-size: 14px;
-
-        body {
-            background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            font-size: 32px;
-            font-style: italic;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        th, td {
-            border: 1px solid #90caf9;
-            padding: 12px;
-            text-align: center;
-        }
-        th {
-            background-color: #bbdefb;
-            font-weight: bold;
-
-        }
-        h1 {
-            font-size: 24px;
-        }
-        .nav-links a {
-            padding: 6px 12px;
-            font-size: 14px;
-        }
+    .popup.error {
+        background-color: #ffcdd2;
+        color: #c62828;
+        padding: 12px 25px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-top: 20px;
+        text-align: center;
     }
 </style>
 </head>
 <body>
 
-
 <div class="container">
-    <h1>Overdue Records</h1>
+    <h1>📅 Overdue Records</h1>
 
     <table>
         <thead>
             <tr>
-                <th>Member ID</th>
-                <th>Member Name</th>
-                <th>Book ID</th>
-                <th>Book Title</th>
-                <th>Issue Date</th>
+                <th>👤 Member ID</th>
+                <th>🧑 Member Name</th>
+                <th>📘 Book ID</th>
+                <th>📖 Book Title</th>
+                <th>📆 Issue Date</th>
+                <th>📍 Days Overdue</th>
             </tr>
         </thead>
         <tbody>
@@ -152,8 +123,10 @@
             </c:forEach>
             <c:if test="${empty overdue}">
                 <tr>
-                    <td colspan="6" style="text-align:center; padding: 20px; font-style: italic; color: #555;">
-                        No overdue records found.
+                    <td colspan="6">
+                        <div class="popup error">
+                            No overdue records found.
+                        </div>
                     </td>
                 </tr>
             </c:if>
@@ -161,8 +134,8 @@
     </table>
 
     <div class="nav-links">
-        <a href="${pageContext.request.contextPath}/jsp/index.jsp">Home</a>
-        <a href="${pageContext.request.contextPath}/jsp/reports.jsp">Back</a>
+        <a href="${pageContext.request.contextPath}/jsp/index.jsp">🏠 Home</a>
+        <a href="${pageContext.request.contextPath}/jsp/reports.jsp">← Back</a>
     </div>
 </div>
 
