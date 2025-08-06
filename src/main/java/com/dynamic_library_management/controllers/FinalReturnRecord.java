@@ -1,10 +1,8 @@
 package com.dynamic_library_management.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import com.dynamic_library_management.dao.implementation.IssueRecordDaoImplementation;
-import com.dynamic_library_management.services.implementation.IssueRecordServiceImplementation;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -17,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FinalReturnRecord extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
@@ -36,7 +35,7 @@ public class FinalReturnRecord extends HttpServlet {
 				request.setAttribute("status", "error");
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher("jsp/returnBook.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("returnRecord");
 			rd.forward(request, response);
 
 		} catch (Exception e) {

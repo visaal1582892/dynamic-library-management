@@ -116,10 +116,6 @@
         font-weight: bold;
     }
 
-    .btn:hover {
-        background-color: #42a5f5;
-    }
-
     .message {
         font-size: 13px;
         margin-top: 12px;
@@ -127,13 +123,13 @@
         text-align: center;
     }
 
-    .success {
-        color: green;
-    }
+.success {
+	color: green;
+}
 
-    .error {
-        color: red;
-    }
+.error {
+	color: red;
+}
 </style>
 </head>
 <body>
@@ -145,33 +141,40 @@
     <h1>🔄 Return Book</h1>
     <form action="returnRecord" method="post">
 
-        <label>Select Member:</label>
-        <select name="memberId" required>
-            <option value="">Select Member</option>
-            <c:forEach var="m" items="${members}">
-                <option value="${m.memberId}" ${selectedMemberId == m.memberId ? "selected" : ""}>${m.memberName}</option>
-            </c:forEach>
-        </select>
+			<label>Select Member:</label> <select name="memberId" required>
+				<option value="">Select Member</option>
+				<c:forEach var="m" items="${members}">
+					<option value="${m.memberId}"
+						${selectedMemberId == m.memberId ? "selected" : ""}>${m.memberName}</option>
+				</c:forEach>
+			</select>
 
-        <c:if test="${step == 'book'}">
-            <label>Select Book:</label>
-            <select name="bookId" required>
-                <option value="">Select Book</option>
-                <c:forEach var="b" items="${books}">
-                    <option value="${b.bookId}">${b.title}</option>
-                </c:forEach>
-            </select>
-        </c:if>
+			<c:if test="${step == 'book'}">
+				<label>Select Book:</label>
+				<select name="bookId" required>
+					<option value="">Select Book</option>
+					<c:forEach var="b" items="${books}">
+						<option value="${b.bookId}">${b.title}</option>
+					</c:forEach>
+				</select>
+			</c:if>
 
-        <input type="submit" 
-               class="btn"
-               value="<c:choose><c:when test='${step == "book"}'>📕 Return Book</c:when><c:otherwise>➡️ Next</c:otherwise></c:choose>" />
-    </form>
+			<c:choose>
+				<c:when test="${step == 'book'}">
+					<input type="submit" class="btn" formaction="finalReturn"
+						value="Return Book" />
+				</c:when>
+				<c:otherwise>
+					<input type="submit" class="btn" value="Next" />
+				</c:otherwise>
+			</c:choose>
 
-    <c:if test="${not empty message}">
-        <p class="message ${status}">${message}</p>
-    </c:if>
-</div>
+		</form>
+
+		<c:if test="${not empty message}">
+			<p class="message ${status}">${message}</p>
+		</c:if>
+	</div>
 
 </body>
 </html>

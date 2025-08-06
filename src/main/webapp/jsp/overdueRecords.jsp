@@ -132,23 +132,22 @@
     <table>
         <thead>
             <tr>
-                <th>Issue ID</th>
-                <th>Book ID</th>
                 <th>Member ID</th>
-                <th>Status</th>
+                <th>Member Name</th>
+                <th>Book ID</th>
+                <th>Book Title</th>
                 <th>Issue Date</th>
-                <th>Return Date</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach var="issue" items="${overdue}">
                 <tr>
-                    <td><c:out value="${issue.issueId}" /></td>
-                    <td><c:out value="${issue.bookId}" /></td>
-                    <td><c:out value="${issue.memberId}" /></td>
-                    <td><c:out value="${issue.status}" /></td>
-                    <td><c:out value="${issue.issueDate}" /></td>
-                    <td><c:out value="${issue.returnDate}" /></td>
+                    <td><c:out value="${issue[0]}" /></td>
+                    <td><c:out value="${issue[1]}" /></td>
+                    <td><c:out value="${issue[2]}" /></td>
+                    <td><c:out value="${issue[3]}" /></td>
+                    <td><c:out value="${issue[4]}" /></td>
+                    <td><c:out value="${issue[5]}" /></td>
                 </tr>
             </c:forEach>
             <c:if test="${empty overdue}">
@@ -166,33 +165,6 @@
         <a href="${pageContext.request.contextPath}/jsp/reports.jsp">Back</a>
     </div>
 </div>
-
-
-<h1>Overdue Records</h1>
-	<table>
-		<tr>
-			<th>Issue ID</th>
-			<th>Book ID</th>
-			<th>Member ID</th>
-			<th>Status</th>
-			<th>Issue Date</th>
-			<th>Return date</th>
-		</tr>
-		<c:forEach var="issue" items="${overdue}">
-			<tr>
-				<td><c:out value="${issue.issueId}" /></td>
-				<td><c:out value="${issue.bookId}" /></td>
-				<td><c:out value="${issue.memberId}" /></td>
-				<td><c:choose>
-						<c:when test="${issue.status == 'I'}">Issued</c:when>
-						<c:when test="${issue.status == 'R'}">Returned</c:when>
-						<c:otherwise>Unknown</c:otherwise>
-					</c:choose></td>
-				<td><c:out value="${issue.issueDate}" /></td>
-				<td><c:out value="${issue.returnDate}" /></td>
-			</tr>
-		</c:forEach>
-	</table>
 
 </body>
 </html>

@@ -7,11 +7,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dynamic_library_management.dao.implementation.ReportsDaoImplementation;
-import com.dynamic_library_management.domain.IssueRecord;
-
 
 @WebServlet("/overdueRecords")
 public class OverdueRecordsController extends HttpServlet {
@@ -20,7 +19,12 @@ public class OverdueRecordsController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 
-			List<IssueRecord> overdue = new ReportsDaoImplementation().getOverdueBooks();
+			List<String[]> overdue = new ArrayList<>();
+			List<List<String>> raw = new ReportsDaoImplementation().getOverdueBooks();
+			
+			for (List<String> row : raw) {
+				overdue.add(row.toArray(new String[0]));
+			}
 					
 			request.setAttribute("overdue", overdue);
 

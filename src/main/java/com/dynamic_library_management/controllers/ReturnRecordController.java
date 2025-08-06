@@ -27,7 +27,7 @@ public class ReturnRecordController extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			List<Member> members = new MemberDaoImplementation().getAllMembers();
-			request.setAttribute("members", members);
+			request.getSession().setAttribute("members", members);
 			request.setAttribute("step", "member");
 
 			RequestDispatcher rd = request.getRequestDispatcher("jsp/returnBook.jsp");
@@ -56,7 +56,7 @@ public class ReturnRecordController extends HttpServlet {
 				// Step 1: Show books issued to selected member
 				int memberId = Integer.parseInt(memberIdParam);
 				List<Book> issuedBooks = new BookDaoImplementation().selectAllMemberBooks(memberId);
-				request.setAttribute("books", issuedBooks);
+				request.getSession().setAttribute("books", issuedBooks);
 				request.setAttribute("selectedMemberId", memberId);
 				request.setAttribute("step", "book");
 			} else {

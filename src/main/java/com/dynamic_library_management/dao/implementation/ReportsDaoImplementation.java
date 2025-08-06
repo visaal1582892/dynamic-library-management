@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 import com.dynamic_library_management.dao.ReportsDaoInterface;
-import com.dynamic_library_management.domain.IssueRecord;
 import com.dynamic_library_management.exceptions.DatabaseException;
 import com.dynamic_library_management.utilities.ConnectionPoolingServlet;
 
@@ -49,14 +48,45 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 	}
 	
 
-	public List<IssueRecord> getOverdueBooks() {
+	public List<List<String>> getOverdueBooks() {
 		//return dao.getOverdueBooks();
-		List<IssueRecord> overdue = new IssueRecordDaoImplementation().getAllIssues().stream()
-				.filter(b -> b.getReturnDate()==null)
-				.filter(b -> b.getIssueDate().isBefore(LocalDate.now().minusDays(17)))
-				.collect(Collectors.toList());
-		System.out.println(overdue);
-		return overdue;
+		List<List<String>> temp = new ArrayList<>();
+
+	    String sql = "SELECT m.member_id, m.name, b.book_id, b.title, ir.issue_date, ir.return_date FROM members m JOIN issue_records ir ON m.member_id = ir.member_id JOIN books b ON ir.book_id = b.book_id";
+
+	    try (Connection conn = getDataSource().getConnection();
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+
+	        while (rs.next()) {
+	            List<String> issue = new ArrayList<>();
+	            issue.add(String.valueOf(rs.getInt("member_id")));   
+	            issue.add(rs.getString("name"));                     
+	            issue.add(rs.getString("book_id"));                  
+	            issue.add(rs.getString("title"));                    
+	            issue.add(rs.getString("issue_date"));               
+	            issue.add(rs.getString("return_date"));              
+	            temp.add(issue);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    List<List<String>> overdue = temp.stream()
+	        .filter(b -> b.get(5) == null || b.get(5).trim().isEmpty())
+	        .filter(b -> {
+	            try {
+	                LocalDate issueDate = LocalDate.parse(b.get(4));
+	                return issueDate.isBefore(LocalDate.now().minusDays(17));
+	            } catch (Exception e) {
+	                return false; 
+	            }
+	        })
+	        .collect(Collectors.toList());
+
+	    System.out.println(overdue);
+	    return overdue;
 	}
 
 	@Override
