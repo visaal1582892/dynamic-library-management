@@ -49,9 +49,26 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 	}
 	
 
-	public List<IssueRecord> getOverdueBooks() {
+	public List<List<String>> getOverdueBooks() {
 		//return dao.getOverdueBooks();
-		List<IssueRecord> overdue = new IssueRecordDaoImplementation().getAllIssues().stream()
+		List<List<String>> temp;
+		String sql = "SELECT m.member_id, m.name, b.title,  b.book_id, ir.issue_date FROM members m JOIN issue_records ir ON m.member_id = ir.member_id JOIN books b ON ir.book_id = b.book_id";
+		try (Connection conn = getDataSource().getConnection();) {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				List<String> issue = new ArrayList<>();
+				issue.add(String.valueOf(rs.getInt("member_id")));
+				issue.add(rs.getString("name"));
+				issue.add(rs.getString("book_id"));
+				issue.add(rs.getString("title"));
+				issue.add(rs.getString("issue_date"));
+				temp.add(issue);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		List<List<String>> overdue  = temp.stream()
 				.filter(b -> b.getReturnDate()==null)
 				.filter(b -> b.getIssueDate().isBefore(LocalDate.now().minusDays(17)))
 				.collect(Collectors.toList());
