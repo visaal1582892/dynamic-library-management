@@ -11,15 +11,15 @@
         margin: 0;
         padding: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-            url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80');
+        background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80'); 
         background-size: cover;
         background-position: center;
         min-height: 100vh;
     }
 
     .container {
-        width: 80%;
+        width:80%;
         margin: 50px auto;
         background: rgba(255, 255, 255, 0.96);
         padding: 30px 40px;
@@ -107,7 +107,7 @@
                 <th>📘 Book ID</th>
                 <th>📖 Book Title</th>
                 <th>📆 Issue Date</th>
-                <th>📍 Days Overdue</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -118,7 +118,7 @@
                     <td><c:out value="${issue[2]}" /></td>
                     <td><c:out value="${issue[3]}" /></td>
                     <td><c:out value="${issue[4]}" /></td>
-                    <td><c:out value="${issue[5]}" /></td>
+                    
                 </tr>
             </c:forEach>
             <c:if test="${empty overdue}">
