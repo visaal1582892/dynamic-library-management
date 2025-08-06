@@ -73,7 +73,6 @@ public class ReturnRecordController extends HttpServlet {
 					request.setAttribute("status", "error");
 				}
 
-				// Reset to Step 1
 				request.setAttribute("step", "member");
 			}
 

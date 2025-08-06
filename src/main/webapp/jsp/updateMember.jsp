@@ -216,10 +216,14 @@
         </div>
 
         <div class="form-group">
-            <label>Gender</label>
-            <input type="text" name="genderDisplay" value="<%= selected.getGender() %>" readonly />
-            <input type="hidden" name="gender" value="<%= selected.getGender() %>" />
-        </div>
+    <label for="gender">Gender</label>
+    <select name="gender" required>
+        <option value="">Select Gender</option>
+        <option value="M" <%= "M".equalsIgnoreCase(selected.getGender()) ? "selected" : "" %>>Male</option>
+        <option value="F" <%= "F".equalsIgnoreCase(selected.getGender()) ? "selected" : "" %>>Female</option>
+    </select>
+</div>
+
 
         <div class="form-group">
             <label>Address</label>

@@ -18,7 +18,7 @@ import com.dynamic_library_management.domain.IssueRecordStatus;
 import com.dynamic_library_management.utilities.ConnectionPoolingServlet;
 
 public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
-	
+
 	private final DataSource dataSource = ConnectionPoolingServlet.getDataSource();
 
 	public DataSource getDataSource() {
@@ -126,7 +126,7 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 				return "Failed to update book availability";
 			}
 			System.out.println("Book status updated successfully");
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
