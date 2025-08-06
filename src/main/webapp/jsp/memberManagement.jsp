@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-           background: 
+            background: 
                 linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
                 url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80');
             background-size: cover;
@@ -25,7 +25,8 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            padding: 8px 16px;
+            padding: 6px 14px;
+            font-size: 13px;
             background-color: rgba(255, 255, 255, 0.8);
             color: #0d47a1;
             font-weight: bold;
@@ -42,27 +43,27 @@
 
         .container {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px 60px;
+            padding: 30px 40px;
             border-radius: 15px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             text-align: center;
-            width: 450px;
+            width: 380px;
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 20px;
             color: #0d47a1;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-bottom: 2px solid #90caf9;
             display: inline-block;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
         .btn {
             display: block;
-            margin: 15px auto;
-            padding: 12px 30px;
-            font-size: 18px;
+            margin: 12px auto;
+            padding: 10px 24px;
+            font-size: 14px;
             background-color: #64b5f6;
             color: white;
             border: none;
@@ -70,6 +71,7 @@
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease;
+            width: 100%;
         }
 
         .btn:hover {
@@ -82,18 +84,18 @@
 <a href="${pageContext.request.contextPath}/jsp/index.jsp" class="back-btn">← Back</a>
 
 <div class="container">
-    <h1>Member Management Options</h1>
+    <h1>👤 Member Management</h1>
 
     <form action="addMember.jsp" method="get">
-        <button type="submit" class="btn">Register Member</button>
+        <button type="submit" class="btn">➕ Register Member</button>
     </form>
 
     <form action="updateMember.jsp" method="get">
-        <button type="submit" class="btn">Update Member</button>
+        <button type="submit" class="btn">📝 Update Member</button>
     </form>
 
     <form action="viewAllMembers.jsp" method="get">
-        <button type="submit" class="btn">View All Members</button>
+        <button type="submit" class="btn">📋 View All Members</button>
     </form>
 </div>
 

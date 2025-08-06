@@ -12,16 +12,6 @@
     request.setAttribute("bookList", new BookDaoImplementation().selectAllBooks());
 %>
 
-<%! 
-    public Book selectById(HttpServletRequest request, int id) {
-        List<Book> books = (List<Book>) request.getAttribute("bookList");
-        return books.stream()
-                    .filter(book -> book.getBookId() == id)
-                    .findFirst()
-                    .get();
-    }
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +21,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             background: 
                 linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
                 url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80');
@@ -46,14 +36,15 @@
 
         .back-btn {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 15px;
+            left: 15px;
             background-color: rgba(255, 255, 255, 0.8);
             color: #0d47a1;
-            padding: 8px 16px;
+            padding: 6px 12px;
+            font-size: 14px;
             font-weight: bold;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             text-decoration: none;
             transition: background-color 0.3s ease;
             z-index: 10;
@@ -64,51 +55,51 @@
         }
 
         .container {
-            width: 500px;
+            width: 360px;
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px 50px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            padding: 25px 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
             text-align: center;
-            font-size: 26px;
+            font-size: 22px;
             color: #0d47a1;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border-bottom: 2px solid #90caf9;
             display: inline-block;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
         label {
             display: block;
-            margin-top: 18px;
-            font-size: 16px;
+            margin-top: 12px;
+            font-size: 14px;
             color: #0d47a1;
             font-weight: bold;
         }
 
         input[type="text"], select {
             width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            font-size: 14px;
+            padding: 8px;
+            margin-top: 4px;
+            font-size: 13px;
             border: 1px solid #ccc;
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         .submit-btn {
             display: block;
             width: 100%;
-            margin-top: 30px;
-            padding: 12px;
+            margin-top: 20px;
+            padding: 10px;
             background-color: #64b5f6;
             color: white;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: bold;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -116,17 +107,47 @@
         .submit-btn:hover {
             background-color: #42a5f5;
         }
+
+        .popup {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            display: none;
+        }
+
+        .popup.success {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .popup.error {
+            background-color: #ffcdd2;
+            color: #c62828;
+        }
     </style>
 </head>
 <body>
 
 <a href="${pageContext.request.contextPath}/jsp/bookOptions.jsp" class="back-btn">← Back</a>
 
+<!-- Message Popup -->
+<c:if test="${not empty message}">
+    <div id="popupMessage" class="popup ${success ? 'success' : 'error'}">
+        ${message}
+    </div>
+</c:if>
+
 <div class="container">
-    <h1>Update Book</h1>
+    <h1>🔄 Update Book</h1>
 
     <form action="${pageContext.request.contextPath}/updateBookDetailsController" method="post">
-        <!-- Book Selection -->
         <label>Select Book:</label>
         <select id="bookSelector" name="bookId" onchange="loadBookDetails()" required>
             <option disabled selected>Select Book to Update</option>
@@ -157,7 +178,7 @@
             </c:forEach>
         </select>
 
-        <input type="submit" class="submit-btn" value="Update Book" />
+        <input type="submit" class="submit-btn" value="✏️ Update Book" />
     </form>
 </div>
 
@@ -176,13 +197,20 @@
     function loadBookDetails() {
         const selectedId = Number(document.getElementById("bookSelector").value.split(".")[0]);
         const currBook = bookMap.get(selectedId);
-
         if (currBook) {
             document.getElementById("titleField").value = currBook["title"];
             document.getElementById("authorField").value = currBook["author"];
             document.getElementById("categoryField").value = currBook["category"];
             document.getElementById("statusField").value = currBook["status"];
         }
+    }
+
+    const popup = document.getElementById('popupMessage');
+    if (popup) {
+        popup.style.display = 'block';
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 3000);
     }
 </script>
 

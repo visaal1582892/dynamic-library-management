@@ -35,12 +35,12 @@
         .btn-top {
             background-color: #bbdefb;
             color: #0d47a1;
-            padding: 8px 16px;
+            padding: 6px 14px;
             font-weight: bold;
             border: none;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .btn-top:hover {
@@ -52,7 +52,7 @@
             padding: 30px 40px;
             border-radius: 15px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            width: 550px;
+            width: 450px;
         }
 
         h1 {
@@ -62,18 +62,18 @@
             border-bottom: 2px solid #90caf9;
             display: inline-block;
             padding-bottom: 10px;
-            font-size: 28px;
+            font-size: 22px;
             font-style: italic;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 5px;
         }
 
@@ -81,11 +81,10 @@
         input[type="email"],
         select {
             width: 100%;
-            padding: 10px;
-            font-size: 14px;
+            padding: 8px;
+            font-size: 13px;
             border-radius: 8px;
             border: 1px solid #ccc;
-            margin-top: 5px;
         }
 
         input[readonly] {
@@ -93,10 +92,10 @@
         }
 
         .btn {
-            margin-top: 20px;
-            padding: 12px;
+            margin-top: 16px;
+            padding: 10px;
             width: 100%;
-            font-size: 16px;
+            font-size: 14px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
@@ -109,52 +108,59 @@
             background-color: #42a5f5;
         }
 
-        .message {
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 10px;
+        .popup-message {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #d0f0c0;
+            color: #2e7d32;
+            padding: 10px 20px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-weight: bold;
+            font-size: 14px;
+            z-index: 1000;
+            animation: fadeOut 0.5s ease-in-out 2.5s forwards;
         }
 
-        .success {
-            background-color: #c8e6c9;
-            color: #1b5e20;
-        }
-
-        .error {
+        .popup-message.error {
             background-color: #ffcdd2;
-            color: #b71c1c;
+            color: #c62828;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+                transform: translateX(-50%) translateY(-10px);
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- Top Buttons -->
 <div class="top-buttons">
     <a href="${pageContext.request.contextPath}/jsp/memberManagement.jsp" class="btn-top">← Back</a>
     <a href="${pageContext.request.contextPath}/jsp/index.jsp" class="btn-top">🏠 Home</a>
 </div>
 
+<%
+    String msg = (String) request.getAttribute("message");
+    String status = (String) request.getAttribute("status");
+    if (msg != null && !msg.isEmpty()) {
+%>
+    <div class="popup-message <%= "success".equalsIgnoreCase(status) ? "" : "error" %>">
+        <%= msg %>
+    </div>
+<%
+    }
+%>
+
 <div class="container">
 
-    <!-- Success or Error Message -->
-    <%
-        String msg = (String) request.getAttribute("message");
-        String status = (String) request.getAttribute("status");
-        if (msg != null && !msg.isEmpty()) {
-    %>
-        <div class="message <%= "success".equalsIgnoreCase(status) ? "success" : "error" %>">
-            <%= msg %>
-        </div>
-    <%
-        }
-    %>
-
-    <!-- GET form to load member -->
     <form action="/dynamic-library-management/updateMemberController" method="get">
-        <h1>UPDATE MEMBER DETAILS</h1>
+        <h1>✏️ Update Member</h1>
 
         <div class="form-group">
             <label for="memberId">Select Member</label>
@@ -188,7 +194,6 @@
         </div>
     </form>
 
-    <!-- POST form to update member -->
     <form action="/dynamic-library-management/updateMemberController" method="post">
         <%
             if (selected != null) {
@@ -222,7 +227,7 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn">Update</button>
+            <button type="submit" class="btn">✅ Update Member</button>
         </div>
         <%
             }

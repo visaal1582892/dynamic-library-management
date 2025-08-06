@@ -17,7 +17,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             background: 
                 linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
                 url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80');
@@ -32,65 +32,64 @@
 
         .home-btn, .back-btn {
             position: absolute;
-            top: 20px;
-            padding: 8px 16px;
+            top: 15px;
+            padding: 6px 12px;
+            font-size: 14px;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 6px;
             border: none;
             text-decoration: none;
         }
 
         .home-btn {
-            right: 20px;
+            right: 15px;
             background-color: #c8e6c9;
             color: #1b5e20;
         }
 
         .back-btn {
-            left: 20px;
+            left: 15px;
             background-color: #bbdefb;
             color: #0d47a1;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+            width: 360px;
         }
 
         h1 {
             text-align: center;
+            font-size: 22px;
             color: #0d47a1;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #90caf9;
-            display: inline-block;
-            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            margin-top: 15px;
-            font-size: 16px;
+            margin-top: 10px;
+            font-size: 14px;
             font-weight: bold;
         }
 
         input[type="text"], select {
             width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 8px;
+            padding: 8px;
+            font-size: 13px;
+            border-radius: 6px;
             border: 1px solid #ccc;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         .btn {
-            margin-top: 25px;
-            padding: 12px;
+            margin-top: 20px;
+            padding: 10px;
             width: 100%;
-            font-size: 16px;
-            border-radius: 8px;
+            font-size: 14px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             background-color: #64b5f6;
@@ -101,6 +100,31 @@
         .btn:hover {
             background-color: #42a5f5;
         }
+
+        .popup {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f0f0f0;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            font-size: 14px;
+            display: none;
+        }
+
+        .popup.success {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .popup.error {
+            background-color: #ffcdd2;
+            color: #c62828;
+        }
     </style>
 </head>
 <body>
@@ -108,8 +132,12 @@
     <a href="${pageContext.request.contextPath}/jsp/index.jsp" class="home-btn">Home</a>
     <a href="${pageContext.request.contextPath}/jsp/bookOptions.jsp" class="back-btn">Back</a>
 
+    <c:if test="${not empty message}">
+        <div id="popupMessage" class="popup ${success ? 'success' : 'error'}">${message}</div>
+    </c:if>
+
     <div class="container">
-        <h1>ADD BOOK</h1>
+        <h1>Add Book</h1>
 
         <form action="/dynamic-library-management/addBookController" method="post">
             <label>Title:</label>
@@ -126,9 +154,19 @@
                 </c:forEach>
             </select>
 
-            <input type="submit" value="Add Book" class="btn" />
+            <input type="submit" value="➕ Add Book" class="btn" />
         </form>
     </div>
+
+    <script>
+        const popup = document.getElementById('popupMessage');
+        if (popup) {
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 5000);
+        }
+    </script>
 
 </body>
 </html>

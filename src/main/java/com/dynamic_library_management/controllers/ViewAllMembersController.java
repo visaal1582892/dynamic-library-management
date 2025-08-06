@@ -23,10 +23,10 @@ public class ViewAllMembersController extends HttpServlet {
 		try {
 			List<Member> members = new MemberServiceImplementation().validateViewAllMembers();
 			request.setAttribute("members", members);
-			request.getRequestDispatcher("/viewAllMembers.jsp").forward(request, response);
+			request.getRequestDispatcher("jsp/viewAllMembers.jsp").forward(request, response);
 		} catch (DatabaseException e) {
 			request.setAttribute("errorMessage", "Cannot Fetch Members Data...");
-			request.getRequestDispatcher("/viewAllMembers.jsp").forward(request, response);
+			request.getRequestDispatcher("jsp/viewAllMembers.jsp").forward(request, response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

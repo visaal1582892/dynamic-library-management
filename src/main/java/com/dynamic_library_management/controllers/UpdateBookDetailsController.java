@@ -55,13 +55,16 @@ public class UpdateBookDetailsController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("bookId").split(",")[0]);
-		String title = request.getParameter("title");
-		String author = request.getParameter("author");
-		BookCategory category = BookCategory.getEnumConstant(request.getParameter("category"));
-		BookStatus status = BookStatus.getEnumConstant(request.getParameter("status"));
-
 		try {
+			String bookIdString = request.getParameter("bookId");
+			if (bookIdString == null) {
+				throw new InvalidDetailsException("Book Must Be Selected to Update...");
+			}
+			int id = Integer.parseInt(bookIdString.split(",")[0]);
+			String title = request.getParameter("title");
+			String author = request.getParameter("author");
+			BookCategory category = BookCategory.getEnumConstant(request.getParameter("category"));
+			BookStatus status = BookStatus.getEnumConstant(request.getParameter("status"));
 			new BookServiceImplementation().validateUpdateBookDetails(id, title, author, category, status);
 			setSuccess(true);
 			setMessage("Book Updated Succesfully...");
@@ -71,7 +74,7 @@ public class UpdateBookDetailsController extends HttpServlet {
 			setMessage(e.getMessage());
 //			ResponseHandler.showResponse(message, e.getMessage(), Color.RED);
 		} finally {
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/response.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/updateBookDetails.jsp");
 			request.setAttribute("message", getMessage());
 			request.setAttribute("success", isSuccess());
 			if (isSuccess()) {

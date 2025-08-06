@@ -32,9 +32,7 @@ public class ViewAllBooksController extends HttpServlet {
 			messageColor = "red";
 		}
 
-		req.setAttribute("books", books);
-		req.setAttribute("message", message);
-		req.setAttribute("messageColor", messageColor);
-		req.getRequestDispatcher("jsp/viewAllBooks.jsp").forward(req, resp);
+		req.getSession().setAttribute("books", books);
+		resp.sendRedirect("jsp/viewAllBooks.jsp");
 	}
 }
