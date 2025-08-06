@@ -45,39 +45,20 @@ public class ReturnRecordController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String memberIdParam = request.getParameter("memberId");
-		String bookIdParam = request.getParameter("bookId");
-
-		try {
-			List<Member> members = new MemberDaoImplementation().getAllMembers();
-			request.setAttribute("members", members);
-
-			if (bookIdParam == null || bookIdParam.isEmpty()) {
-				// Step 1: Show books issued to selected member
-				int memberId = Integer.parseInt(memberIdParam);
-				List<Book> issuedBooks = new BookDaoImplementation().selectAllMemberBooks(memberId);
-				request.getSession().setAttribute("books", issuedBooks);
+		
+		String selectedMemberId = request.getParameter("memberId");
+		if (selectedMemberId != null && !selectedMemberId.isEmpty()) {
+			int memberId = Integer.parseInt(selectedMemberId);
+			System.out.println(memberId);
+			try {
+				List<Member> members = new MemberDaoImplementation().getAllMembers();
+				request.setAttribute("members", members);
 				request.setAttribute("selectedMemberId", memberId);
+
+				List<Book> issuedBooks = new BookDaoImplementation().selectAllMemberBooks(memberId);
+				request.setAttribute("books", issuedBooks);
 				request.setAttribute("step", "book");
-			} else {
-				// Step 2: Return the selected book
-				int memberId = Integer.parseInt(memberIdParam);
-				int bookId = Integer.parseInt(bookIdParam);
-
-				String resultMessage = new IssueRecordDaoImplementation().returnBook(bookId, memberId);
-
-				request.setAttribute("message", resultMessage);
-				if ("Book returned successfully".equalsIgnoreCase(resultMessage)) {
-					request.setAttribute("status", "success");
-				} else {
-					request.setAttribute("status", "error");
-				}
-
-				request.setAttribute("step", "member");
-			}
-
-			RequestDispatcher rd = request.getRequestDispatcher("jsp/returnBook.jsp");
-			rd.forward(request, response);
+				request.getRequestDispatcher("jsp/returnBook.jsp").forward(request, response);
 
 		} catch (DatabaseException | SQLException e) {
 			e.printStackTrace();
@@ -89,6 +70,7 @@ public class ReturnRecordController extends HttpServlet {
 			request.setAttribute("status", "error");
 			request.setAttribute("message", "Unexpected error occurred.");
 			request.getRequestDispatcher("jsp/returnBook.jsp").forward(request, response);
+		}
 		}
 	}
 }
