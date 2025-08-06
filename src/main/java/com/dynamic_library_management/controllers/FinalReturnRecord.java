@@ -29,7 +29,7 @@ public class FinalReturnRecord extends HttpServlet {
 			String print_message = new IssueRecordDaoImplementation().returnBook(memberId, bookId);
 
 			request.setAttribute("message", print_message);
-			if (print_message == "Book returned successfully") {
+			if (print_message.equals("Book returned successfully") ){
 				request.setAttribute("status", "success");
 			} else {
 				request.setAttribute("status", "error");

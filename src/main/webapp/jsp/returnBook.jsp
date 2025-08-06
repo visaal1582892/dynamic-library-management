@@ -155,7 +155,7 @@
 <a href="${pageContext.request.contextPath}/jsp/issueReturn.jsp" class="back-btn">← Back</a>
 
 <c:if test="${not empty message}">
-	<div id="popupMessage" class="popup ${success ? 'success' : 'error'}">${message}</div>
+	<div id="popupMessage" class="popup ${status}">${message}</div>
 </c:if>
 
 <div class="container">
