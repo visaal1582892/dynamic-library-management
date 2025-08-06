@@ -145,38 +145,6 @@
         color: #c62828;
     }
 
-    @media (max-width: 768px) {
-        .container {
-            padding: 20px;
-            max-width: 90%;
-        }
-
-        h1 {
-            font-size: 16px;
-        }
-
-        label {
-            font-size: 12px;
-        }
-
-        select {
-            font-size: 12px;
-        }
-
-        .btn {
-            font-size: 12px;
-            padding: 8px;
-        }
-
-        .home-btn, .back-btn {
-            font-size: 11px;
-            padding: 5px 10px;
-        }
-
-        .popup {
-            font-size: 12px;
-        }
-    }
 </style>
 </head>
 <body>

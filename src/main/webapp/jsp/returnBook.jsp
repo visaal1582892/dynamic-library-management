@@ -123,19 +123,40 @@
         text-align: center;
     }
 
-.success {
-	color: green;
-}
+.popup {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f0f0f0;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            font-size: 14px;
+            display: none;
+        }
 
-.error {
-	color: red;
-}
+        .popup.success {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .popup.error {
+            background-color: #ffcdd2;
+            color: #c62828;
+        }
 </style>
 </head>
 <body>
 
 <a href="${pageContext.request.contextPath}/jsp/index.jsp" class="home-btn">🏠 Home</a>
 <a href="${pageContext.request.contextPath}/jsp/issueReturn.jsp" class="back-btn">← Back</a>
+
+<c:if test="${not empty message}">
+	<div id="popupMessage" class="popup ${success ? 'success' : 'error'}">${message}</div>
+</c:if>
 
 <div class="container">
     <h1>🔄 Return Book</h1>
@@ -170,11 +191,17 @@
 			</c:choose>
 
 		</form>
-
-		<c:if test="${not empty message}">
-			<p class="message ${status}">${message}</p>
-		</c:if>
 	</div>
+	
+	<script>
+        const popup = document.getElementById('popupMessage');
+        if (popup) {
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 5000);
+        }
+    </script>
 
 </body>
 </html>
