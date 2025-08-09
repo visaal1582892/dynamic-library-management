@@ -2,8 +2,8 @@ package com.dynamic_library_management.controllers;
 
 import java.io.IOException;
 
-import com.dynamic_library_management.domain.BookCategory;
-import com.dynamic_library_management.domain.BookStatus;
+import com.dynamic_library_management.constants.BookCategory;
+import com.dynamic_library_management.constants.BookStatus;
 import com.dynamic_library_management.exceptions.DatabaseException;
 import com.dynamic_library_management.exceptions.InvalidDetailsException;
 import com.dynamic_library_management.services.implementation.BookServiceImplementation;
