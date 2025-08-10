@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.dynamic_library_management.domain.Book" %>
+<%@ page import="com.dynamic_library_management.constants.BookStatus" %>
+<%@ page import="com.dynamic_library_management.constants.BookAvailability" %>
+<%@ page import="com.dynamic_library_management.constants.BookCategory" %>
 
 <%
     String message = (String) session.getAttribute("message");

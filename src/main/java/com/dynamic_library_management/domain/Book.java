@@ -1,5 +1,9 @@
 package com.dynamic_library_management.domain;
 
+import com.dynamic_library_management.constants.BookAvailability;
+import com.dynamic_library_management.constants.BookCategory;
+import com.dynamic_library_management.constants.BookStatus;
+
 public class Book {
 	// All fields of a book
 	private int bookId;

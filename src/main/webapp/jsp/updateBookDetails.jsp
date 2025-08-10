@@ -1,7 +1,7 @@
 <%@page import="com.dynamic_library_management.domain.Book"%>
 <%@page import="com.dynamic_library_management.dao.implementation.BookDaoImplementation"%>
-<%@page import="com.dynamic_library_management.domain.BookCategory"%>
-<%@page import="com.dynamic_library_management.domain.BookStatus"%>
+<%@page import="com.dynamic_library_management.constants.BookCategory"%>
+<%@page import="com.dynamic_library_management.constants.BookStatus"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
