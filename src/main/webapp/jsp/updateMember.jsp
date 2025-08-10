@@ -1,11 +1,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.dynamic_library_management.domain.Member" %>
+<%@ page import="com.dynamic_library_management.constants.MemberGender" %>
 <%@ page import="com.dynamic_library_management.dao.implementation.MemberDaoImplementation"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Update Member</title>
+     <title>Update Member</title>
     <style>
         body {
             margin: 0;
@@ -150,7 +151,7 @@
     String status = (String) request.getAttribute("status");
     if (msg != null && !msg.isEmpty()) {
 %>
-    <div class="popup-message <%= "success".equalsIgnoreCase(status) ? "" : "error" %>">
+    <div class="popup-message <%= "SUCCESS".equalsIgnoreCase(status) ? "" : "error" %>">
         <%= msg %>
     </div>
 <%
@@ -159,6 +160,7 @@
 
 <div class="container">
 
+    <!-- Form for selecting member -->
     <form action="/dynamic-library-management/updateMemberController" method="get">
         <h1>✏ Update Member</h1>
 
@@ -169,14 +171,12 @@
                 <%
                     MemberDaoImplementation dao = new MemberDaoImplementation();
                     List<Member> members = dao.getAllMembers();
-                    request.setAttribute("members", members);
-                    List<Member> allmembers = (List<Member>) request.getAttribute("members");
 
                     Member selected = (Member) request.getAttribute("selectedMember");
                     int selectedId = (selected != null) ? selected.getMemberId() : -1;
 
-                    if (allmembers != null && !allmembers.isEmpty()) {
-                        for (Member m : allmembers) {
+                    if (members != null && !members.isEmpty()) {
+                        for (Member m : members) {
                             String selectedAttr = (m.getMemberId() == selectedId) ? "selected" : "";
                 %>
                 <option value="<%= m.getMemberId() %>" <%= selectedAttr %>>
@@ -216,14 +216,14 @@
         </div>
 
         <div class="form-group">
-    <label for="gender">Gender</label>
-    <select name="gender" required>
-        <option value="">Select Gender</option>
-        <option value="M" <%= "M".equalsIgnoreCase(selected.getGender()) ? "selected" : "" %>>Male</option>
-        <option value="F" <%= "F".equalsIgnoreCase(selected.getGender()) ? "selected" : "" %>>Female</option>
-    </select>
-</div>
-
+            <label for="gender">Gender</label>
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="<%= MemberGender.MALE.name() %>" <%= (selected.getGender() == MemberGender.MALE) ? "selected" : "" %>>Male</option>
+                <option value="<%= MemberGender.FEMALE.name() %>" <%= (selected.getGender() == MemberGender.FEMALE) ? "selected" : "" %>>Female</option>
+                
+            </select>
+        </div>
 
         <div class="form-group">
             <label>Address</label>

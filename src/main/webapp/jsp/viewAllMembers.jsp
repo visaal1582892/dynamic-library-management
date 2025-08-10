@@ -173,7 +173,7 @@ tr:hover {
 					<td><%=member.getMemberName()%></td>
 					<td><%=member.getMemberMail()%></td>
 					<td><%=member.getMobileNo()%></td>
-					<td><%=member.getGender()%></td>
+					<td><%=member.getGender() %></td>
 					<td><%=member.getMemberAddress()%></td>
 					<td>
 						<form method="post" action="${pageContext.request.contextPath}/deleteMemberController"

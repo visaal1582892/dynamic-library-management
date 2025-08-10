@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="com.dynamic_library_management.domain.MemberGender"%>
+<%@page import="com.dynamic_library_management.constants.MemberGender"%>
 <%@page import="java.util.List"%>
 
 
@@ -170,18 +170,14 @@
        required />
        
     <label>Gender:</label>
-  <%--   <select name="gender" required>
+  <select name="gender" required>
         <option value="">Select Gender</option>
         <c:forEach items="${genderList}" var="category">
                     <option value="${category.dbValue}">${category.stringValue}</option>
         </c:forEach>
-    </select> --%>
+    </select> 
 
-      <select name="gender" required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
+   
     <label>Address:</label>
     <input type="text" name="address" placeholder="Enter Your Address" required />
 
