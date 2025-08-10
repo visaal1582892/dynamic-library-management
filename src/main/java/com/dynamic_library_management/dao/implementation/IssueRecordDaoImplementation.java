@@ -12,9 +12,14 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.dynamic_library_management.constants.BookAvailability;
+import com.dynamic_library_management.constants.BookCategory;
+import com.dynamic_library_management.constants.BookStatus;
 import com.dynamic_library_management.dao.IssueRecordDaoInterface;
+import com.dynamic_library_management.domain.Book;
 import com.dynamic_library_management.domain.IssueRecord;
 import com.dynamic_library_management.domain.IssueRecordStatus;
+import com.dynamic_library_management.exceptions.DatabaseException;
 import com.dynamic_library_management.utilities.ConnectionPoolingServlet;
 
 public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
@@ -65,6 +70,11 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 				return "Book is not available for issue";
 			}
 
+			Book book = new Book(bookRs.getInt("book_id"), bookRs.getString("title"), bookRs.getString("author"),
+					BookCategory.getEnumConstant(bookRs.getString("category")),
+				    BookStatus.getEnumConstant(bookRs.getString("status")),
+				    BookAvailability.getEnumConstant(bookRs.getString("availability")));
+			
 			String issueSql = "INSERT INTO issue_records (book_id, member_id, status, issue_date, return_date) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(issueSql);
 			pstmt.setInt(1, issue.getBookId());
@@ -76,16 +86,13 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 			pstmt.executeUpdate();
 			System.out.println("Book issued successfully");
 
-			String updateSql = "UPDATE books SET availability = 'I' WHERE book_id = ?";
-			PreparedStatement updateStmt = conn.prepareStatement(updateSql);
-			updateStmt.setInt(1, issue.getBookId());
-			int rows = updateStmt.executeUpdate();
-			if (rows == 0) {
-				System.out.println("Failed to update book availability");
-				return "Failed to update book availability";
-			}
+			new BookDaoImplementation().updateBookAvailability(book, "I", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return "Failed to issue book: " + e.getMessage();
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			return "Failed to update book: " + e.getMessage();
 		}
 		return "Book issued successfully";
 	}
@@ -105,6 +112,8 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 			}
 			issueId = rs.getInt("issue_id");
 
+			logIssue(issueId);
+			
 			String updateIssueSql = "UPDATE issue_records SET status = 'R', return_date = ? WHERE issue_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(updateIssueSql);
 			pstmt.setDate(1, Date.valueOf(LocalDate.now()));
@@ -115,20 +124,27 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 				return "Failed to update issue record";
 			}
 			System.out.println("Book returned successfully");
-			logIssue(issueId);
-
-			String updateBookSql = "UPDATE books SET availability = 'A' WHERE book_id = ?";
-			PreparedStatement updateStmt = conn.prepareStatement(updateBookSql);
-			updateStmt.setInt(1, bookId);
-			int rowsUpdated = updateStmt.executeUpdate();
-			if (rowsUpdated == 0) {
-				System.out.println("Failed to update book availability");
-				return "Failed to update book availability";
+			
+			String bookSql = "SELECT * FROM books WHERE book_id = ?";
+			PreparedStatement bookStmt = conn.prepareStatement(bookSql);
+			bookStmt.setInt(1, bookId);
+			ResultSet bookRs = bookStmt.executeQuery();
+			if (!bookRs.next()) {
+				return "Book not found for availability update";
 			}
-			System.out.println("Book status updated successfully");
+			Book book = new Book(bookRs.getInt("book_id"), bookRs.getString("title"), bookRs.getString("author"),
+					BookCategory.getEnumConstant(bookRs.getString("category")),
+				    BookStatus.getEnumConstant(bookRs.getString("status")),
+				    BookAvailability.getEnumConstant(bookRs.getString("availability")));
+
+			new BookDaoImplementation().updateBookAvailability(book, "A", conn);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return "Failed to issue book: " + e.getMessage();
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			return "Failed to update book: " + e.getMessage();
 		}
 		return "Book returned successfully";
 	}
