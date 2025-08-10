@@ -2,8 +2,7 @@ package com.dynamic_library_management.controllers;
 
 import java.io.IOException;
 
-import com.dynamic_library_management.domain.BookCategory;
-import com.dynamic_library_management.domain.BookStatus;
+import com.dynamic_library_management.constants.BookCategory;
 import com.dynamic_library_management.exceptions.DatabaseException;
 import com.dynamic_library_management.exceptions.InvalidDetailsException;
 import com.dynamic_library_management.services.implementation.BookServiceImplementation;
@@ -64,8 +63,9 @@ public class UpdateBookDetailsController extends HttpServlet {
 			String title = request.getParameter("title");
 			String author = request.getParameter("author");
 			BookCategory category = BookCategory.getEnumConstant(request.getParameter("category"));
-			BookStatus status = BookStatus.getEnumConstant(request.getParameter("status"));
-			new BookServiceImplementation().validateUpdateBookDetails(id, title, author, category, status);
+//			BookStatus status = BookStatus.getEnumConstant(request.getParameter("status"));
+//			new BookServiceImplementation().validateUpdateBookDetails(id, title, author, category, status);
+			new BookServiceImplementation().validateUpdateBookDetails(id, title, author, category);
 			setSuccess(true);
 			setMessage("Book Updated Succesfully...");
 //			ResponseHandler.showResponse(message, "Book Added Succesfully...", Color.GREEN);

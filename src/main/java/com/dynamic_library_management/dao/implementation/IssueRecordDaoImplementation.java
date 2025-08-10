@@ -12,9 +12,16 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.dynamic_library_management.constants.BookAvailability;
+import com.dynamic_library_management.constants.BookCategory;
+import com.dynamic_library_management.constants.BookStatus;
+import com.dynamic_library_management.dao.BookDaoInterface;
 import com.dynamic_library_management.dao.IssueRecordDaoInterface;
+import com.dynamic_library_management.dao.MemberDaoInterface;
+import com.dynamic_library_management.domain.Book;
 import com.dynamic_library_management.domain.IssueRecord;
 import com.dynamic_library_management.domain.IssueRecordStatus;
+import com.dynamic_library_management.exceptions.DatabaseException;
 import com.dynamic_library_management.utilities.ConnectionPoolingServlet;
 
 public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
@@ -27,132 +34,106 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 
 	@Override
 	public String issueBook(IssueRecord issue) {
-		try (Connection conn = getDataSource().getConnection();) {
-			String memberSql = "SELECT * FROM members WHERE member_id = ?";
-			PreparedStatement memberStmt = conn.prepareStatement(memberSql);
-			memberStmt.setInt(1, issue.getMemberId());
-			ResultSet memberRs = memberStmt.executeQuery();
-			if (!memberRs.next()) {
-				System.out.println("Member does not exist");
-				// ResponseHandler.showResponse(message, e.getMessage(), Color.RED);
+
+		try {
+			Connection conn = getDataSource().getConnection();
+
+			MemberDaoInterface memberDao = new MemberDaoImplementation();
+			BookDaoInterface bookDao = new BookDaoImplementation();
+
+			if (memberDao.selectMemberById(issue.getMemberId()) == null) {
 				return "Member does not exist";
 			}
 
-			String bookSql = "SELECT * FROM books WHERE book_id = ?";
-			PreparedStatement bookStmt = conn.prepareStatement(bookSql);
-			bookStmt.setInt(1, issue.getBookId());
-			ResultSet bookRs = bookStmt.executeQuery();
-			if (!bookRs.next()) {
-				System.out.println("Book does not exist");
+			Book book = bookDao.selectBookById(issue.getBookId());
+			
+			System.out.println("Book " +book.getBookId()+" "+book.getAuthor()+" "+book.getTitle()+" "+book.getStatus()+" "+book.getAvailability());
+			
+			if (book == null) {
 				return "Book does not exist";
 			}
 
-			char status = bookRs.getString("status").charAt(0);
-			char availability = bookRs.getString("availability").charAt(0);
-//			System.out.println("-----------");
-//			System.out.println(bookRs.getString("title"));
-//			System.out.println(bookRs.getString("author"));
-//			System.out.println(bookRs.getString("category"));
-//			System.out.println(status);
-//			System.out.println(availability);
-//			System.out.println("-----------");
-			if (status != 'A') {
-				System.out.println("Book is not active");
+			if (book.getStatus() != BookStatus.ACTIVE) {
 				return "Book is not active";
 			}
-			if (availability != 'A') {
-				System.out.println("Book is not available for issue");
+			if (book.getAvailability() == BookAvailability.ISSUED) {
 				return "Book is not available for issue";
 			}
 
 			String issueSql = "INSERT INTO issue_records (book_id, member_id, status, issue_date, return_date) VALUES (?, ?, ?, ?, ?)";
-			PreparedStatement pstmt = conn.prepareStatement(issueSql);
-			pstmt.setInt(1, issue.getBookId());
-			pstmt.setInt(2, issue.getMemberId());
-			issue.setStatus(IssueRecordStatus.I);
-			pstmt.setString(3, String.valueOf(issue.getStatus()));
-			pstmt.setDate(4, Date.valueOf(issue.getIssueDate()));
-			pstmt.setDate(5, issue.getReturnDate() != null ? Date.valueOf(issue.getReturnDate()) : null);
-			pstmt.executeUpdate();
-			System.out.println("Book issued successfully");
-
-			String updateSql = "UPDATE books SET availability = 'I' WHERE book_id = ?";
-			PreparedStatement updateStmt = conn.prepareStatement(updateSql);
-			updateStmt.setInt(1, issue.getBookId());
-			int rows = updateStmt.executeUpdate();
-			if (rows == 0) {
-				System.out.println("Failed to update book availability");
-				return "Failed to update book availability";
+			try (PreparedStatement pstmt = conn.prepareStatement(issueSql)) {
+				issue.setStatus(IssueRecordStatus.I);
+				pstmt.setInt(1, issue.getBookId());
+				pstmt.setInt(2, issue.getMemberId());
+				pstmt.setString(3, String.valueOf(issue.getStatus()));
+				pstmt.setDate(4, Date.valueOf(issue.getIssueDate()));
+				pstmt.setDate(5, issue.getReturnDate() != null ? Date.valueOf(issue.getReturnDate()) : null);
+				pstmt.executeUpdate();
 			}
+
+			bookDao.updateBookAvailability(book, "I", conn);
+
+			return "Book issued successfully";
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return "Failed to issue book: " + e.getMessage();
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			return "Failed to update book: " + e.getMessage();
 		}
-		return "Book issued successfully";
 	}
 
 	@Override
 	public String returnBook(int memberId, int bookId) {
-		try (Connection conn = getDataSource().getConnection();) {
-			int issueId;
-			String selectSql = "SELECT * FROM issue_records WHERE member_id = ? AND book_id = ? AND status = 'I'";
-			PreparedStatement selectStmt = conn.prepareStatement(selectSql);
-			selectStmt.setInt(1, memberId);
-			selectStmt.setInt(2, bookId);
-			ResultSet rs = selectStmt.executeQuery();
-			if (!rs.next()) {
-				System.out.println("Issue record not found or already returned");
-				return "Issue record not found or already returned";
-			}
-			issueId = rs.getInt("issue_id");
 
-			String updateIssueSql = "UPDATE issue_records SET status = 'R', return_date = ? WHERE issue_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(updateIssueSql);
-			pstmt.setDate(1, Date.valueOf(LocalDate.now()));
-			pstmt.setInt(2, issueId);
-			int rows = pstmt.executeUpdate();
-			if (rows == 0) {
-				System.out.println("Failed to update issue record");
-				return "Failed to update issue record";
+		try {
+			Connection conn = getDataSource().getConnection();
+			BookDaoInterface bookDao = new BookDaoImplementation();
+			MemberDaoInterface memberDao = new MemberDaoImplementation();
+
+			if (memberDao.selectMemberById(memberId) == null) {
+				return "Member does not exist";
 			}
-			System.out.println("Book returned successfully");
+
+			String selectSql = "SELECT * FROM issue_records WHERE member_id = ? AND book_id = ? AND status = 'I'";
+			int issueId = -1;
+			try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
+				selectStmt.setInt(1, memberId);
+				selectStmt.setInt(2, bookId);
+				ResultSet rs = selectStmt.executeQuery();
+				if (!rs.next()) {
+					return "Issue record not found or already returned";
+				}
+				issueId = rs.getInt("issue_id");
+			}
+
 			logIssue(issueId);
 
-			String updateBookSql = "UPDATE books SET availability = 'A' WHERE book_id = ?";
-			PreparedStatement updateStmt = conn.prepareStatement(updateBookSql);
-			updateStmt.setInt(1, bookId);
-			int rowsUpdated = updateStmt.executeUpdate();
-			if (rowsUpdated == 0) {
-				System.out.println("Failed to update book availability");
-				return "Failed to update book availability";
+			String updateIssueSql = "UPDATE issue_records SET status = 'R', return_date = ? WHERE issue_id = ?";
+			try (PreparedStatement pstmt = conn.prepareStatement(updateIssueSql)) {
+				pstmt.setDate(1, Date.valueOf(LocalDate.now()));
+				pstmt.setInt(2, issueId);
+				if (pstmt.executeUpdate() == 0) {
+					return "Failed to update issue record";
+				}
 			}
-			System.out.println("Book status updated successfully");
+
+			Book book = bookDao.selectBookById(bookId);
+			if (book == null) {
+				return "Book not found for availability update";
+			}
+			bookDao.updateBookAvailability(book, "A", conn);
+
+			return "Book returned successfully";
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		return "Book returned successfully";
-	}
-
-	public List<IssueRecord> getOverdueBooks() {
-		List<IssueRecord> overdue = new ArrayList<>();
-		String sql = "SELECT * FROM issue_records WHERE status = 'I' AND issue_date < ?";
-		try (Connection conn = getDataSource().getConnection();) {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setDate(1, Date.valueOf(LocalDate.now().minusDays(17)));
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				IssueRecord issue = new IssueRecord();
-				issue.setIssueId(rs.getInt("issue_id"));
-				issue.setBookId(rs.getInt("book_id"));
-				issue.setMemberId(rs.getInt("member_id"));
-				issue.setStatus(IssueRecordStatus.valueOf(rs.getString("status")));
-				issue.setIssueDate(rs.getDate("issue_date").toLocalDate());
-				issue.setReturnDate(rs.getDate("return_date") != null ? rs.getDate("return_date").toLocalDate() : null);
-			}
-		} catch (SQLException e) {
+			return "Failed to return book: " + e.getMessage();
+		} catch (DatabaseException e) {
 			e.printStackTrace();
+			return "Failed to update book: " + e.getMessage();
 		}
-		return overdue;
 	}
 
 	@Override

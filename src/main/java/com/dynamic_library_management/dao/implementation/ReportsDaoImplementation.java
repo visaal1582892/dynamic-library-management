@@ -28,7 +28,7 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 	public Map<Object, Long> countOfBooksPerCategory() {
 		Map<Object, Long> countMap=null;
 		List<String> booksList=new ArrayList<>();
-		String selectQuery="select category from lms.books";
+		String selectQuery="select category from lms.books where status='A'";
 		ResultSet resultSet;
 		try (Connection conn = getDataSource().getConnection();
 				Statement statement = conn.createStatement()){
@@ -48,6 +48,7 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 	}
 	
 
+	@Override
 	public List<List<String>> getOverdueBooks() {
 		//return dao.getOverdueBooks();
 		List<List<String>> temp = new ArrayList<>();
