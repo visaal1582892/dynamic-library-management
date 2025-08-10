@@ -6,6 +6,7 @@
 <%
 	List<BookCategory> categoryList = List.of(BookCategory.values());
 	request.setAttribute("categoryList", categoryList);
+	System.out.println(categoryList);
 %>
 
 <!DOCTYPE html>
