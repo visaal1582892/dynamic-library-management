@@ -5,8 +5,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
+
 List<BookCategory> categoryList = List.of(BookCategory.values());
 request.setAttribute("categoryList", categoryList);
+
 %>
 
 <!DOCTYPE html>
