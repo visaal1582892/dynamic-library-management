@@ -27,7 +27,7 @@ public class BookDaoImplementation implements BookDaoInterface {
     }
 
 //    Functional to insert logs 
-    private void insertBookLog(Connection conn, Book book) throws SQLException {
+    private void insertBookLog(Connection conn, Book book) throws DatabaseException {
         String insertBooksLogQuery = 
             "INSERT INTO books_log(book_id, title, author, category, status, availability) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement psInsertLog = conn.prepareStatement(insertBooksLogQuery)) {
@@ -37,8 +37,13 @@ public class BookDaoImplementation implements BookDaoInterface {
             psInsertLog.setString(4, book.getCategory().getStringValue());
             psInsertLog.setString(5, book.getStatus().getStringValue());
             psInsertLog.setString(6, book.getAvailability().getStringValue());
-            psInsertLog.executeUpdate();
-        }
+            int count=psInsertLog.executeUpdate();
+            if (count!=1) {
+				throw new DatabaseException("Log Not Inserted Properly");
+			}
+        }catch (DatabaseException | SQLException e) {
+			throw new DatabaseException(e.getMessage());
+		}
     }
 
     @Override
@@ -54,7 +59,10 @@ public class BookDaoImplementation implements BookDaoInterface {
             psInsert.setString(3, book.getCategory().getStringValue());
             psInsert.setString(4, book.getStatus().getStringValue());
             psInsert.setString(5, book.getAvailability().getStringValue());
-            psInsert.executeUpdate();
+            int count=psInsert.executeUpdate();;
+            if (count!=1) {
+				throw new DatabaseException("Book Not Added Correctly");
+			}
 
             ResultSet rs = psInsert.getGeneratedKeys();
             if (rs.next()) {
@@ -62,6 +70,8 @@ public class BookDaoImplementation implements BookDaoInterface {
             }
         } catch (SQLException e) {
             throw new DatabaseException("Failed to add book: " + e.getMessage());
+        }catch(DatabaseException e) {
+        	throw e;
         }
         return id;
     }
@@ -110,7 +120,12 @@ public class BookDaoImplementation implements BookDaoInterface {
                     psUpdate.setString(2, newBook.getAuthor());
                     psUpdate.setString(3, newBook.getCategory().getStringValue());
                     psUpdate.setInt(4, oldBook.getBookId());
-                    psUpdate.executeUpdate();
+                    int count=psUpdate.executeUpdate();
+                    if (count!=1) {
+						throw new DatabaseException("Book Not Updated Correctly...");
+					}
+                }catch(DatabaseException e) {
+                	throw e;
                 }
 
                 conn.commit();
@@ -147,13 +162,20 @@ public class BookDaoImplementation implements BookDaoInterface {
                 try (PreparedStatement psUpdate = conn.prepareStatement(updateAvailabilityQuery)) {
                     psUpdate.setString(1, availability);
                     psUpdate.setInt(2, oldBook.getBookId());
-                    psUpdate.executeUpdate();
-                }
+                    int count=psUpdate.executeUpdate();
+                    if (count!=1) {
+						throw new DatabaseException("Book Availability Not Updated Correctly...");
+					}
+                }catch (DatabaseException e) {
+					throw e;
+				}
 
                 conn.commit();
             } catch (SQLException e) {
                 conn.rollback();
                 throw new DatabaseException("Failed to update availability: " + e.getMessage());
+            }catch(DatabaseException e) {
+            	throw e;
             }
         } catch (SQLException e) {
             throw new DatabaseException("Database error during updateBookAvailability: " + e.getMessage());
@@ -181,7 +203,10 @@ public class BookDaoImplementation implements BookDaoInterface {
                 try (PreparedStatement psUpdateStatus = conn.prepareStatement(updateStatusQuery)) {
                     psUpdateStatus.setString(1, BookStatus.INACTIVE.getStringValue());
                     psUpdateStatus.setInt(2, oldBook.getBookId());
-                    psUpdateStatus.executeUpdate();
+                    int count=psUpdateStatus.executeUpdate();
+                    if (count!=1) {
+						throw new DatabaseException("Book Not deleted Correcly...");
+					}
                 }
 
                 conn.commit();
@@ -189,6 +214,9 @@ public class BookDaoImplementation implements BookDaoInterface {
                 conn.rollback();
                 throw new DatabaseException("Failed to mark book as inactive: " + e.getMessage());
             }
+            catch (DatabaseException e) {
+            	throw e;
+			}
         } catch (SQLException e) {
             throw new DatabaseException("Database error during deleteBook: " + e.getMessage());
         }
