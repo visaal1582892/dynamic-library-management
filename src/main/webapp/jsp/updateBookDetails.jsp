@@ -170,13 +170,13 @@
             </c:forEach>
         </select>
 
-        <label>Status:</label>
+        <%-- <label>Status:</label>
         <select name="status" id="statusField" required>
             <option value="">Select Status</option>
             <c:forEach items="${statusList}" var="status">
                 <option value="${status.getStringValue()}">${status.toString()}</option>
             </c:forEach>
-        </select>
+        </select> --%>
 
         <input type="submit" class="submit-btn" value="✏️ Update Book" />
     </form>
@@ -190,7 +190,7 @@
             "title": "${book.getTitle()}",
             "author": "${book.getAuthor()}",
             "category": "${book.getCategory().getStringValue()}",
-            "status": "${book.getStatus().getStringValue()}"
+            /* "status": "${book.getStatus().getStringValue()}" */
         });
     </c:forEach>
 
@@ -201,9 +201,38 @@
             document.getElementById("titleField").value = currBook["title"];
             document.getElementById("authorField").value = currBook["author"];
             document.getElementById("categoryField").value = currBook["category"];
-            document.getElementById("statusField").value = currBook["status"];
+            /* document.getElementById("statusField").value = currBook["status"]; */
         }
     }
+    
+    const titleInput = document.querySelector('input[name="title"]');
+    const authorInput = document.querySelector('input[name="author"]');
+
+    titleInput.addEventListener('input', function () {
+    	
+        this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '');
+        
+        if (this.value.length > 60) {
+            this.value = this.value.substring(0, 60);
+        }
+    });
+
+    authorInput.addEventListener('input', function () {
+
+        this.value = this.value.replace(/[^a-zA-Z ]/g, '');
+
+        if (this.value.length > 60) {
+            this.value = this.value.substring(0, 60);
+        }
+    });
+    
+    document.querySelector('form').addEventListener('submit', function(e) {
+        let titleField = document.querySelector('input[name="title"]');
+        let authorField = document.querySelector('input[name="author"]');
+
+        titleField.value = titleField.value.trim().replace(/\s+/g, ' ');
+        authorField.value = authorField.value.trim().replace(/\s+/g, ' ');
+    });
 
     const popup = document.getElementById('popupMessage');
     if (popup) {

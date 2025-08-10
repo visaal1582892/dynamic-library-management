@@ -66,10 +66,39 @@ public class BookDaoImplementation implements BookDaoInterface {
         return id;
     }
 
+//    @Override
+//    public void updateBookDetails(Book oldBook, Book newBook) throws DatabaseException {
+//        String updateBooksQuery = 
+//            "UPDATE books SET title=?, author=?, category=?, status=? WHERE book_id=?";
+//
+//        try (Connection conn = getDataSource().getConnection()) {
+//            conn.setAutoCommit(false);
+//            try {
+//                insertBookLog(conn, oldBook);
+//
+//                try (PreparedStatement psUpdate = conn.prepareStatement(updateBooksQuery)) {
+//                    psUpdate.setString(1, newBook.getTitle());
+//                    psUpdate.setString(2, newBook.getAuthor());
+//                    psUpdate.setString(3, newBook.getCategory().getStringValue());
+//                    psUpdate.setString(4, newBook.getStatus().getStringValue());
+//                    psUpdate.setInt(5, oldBook.getBookId());
+//                    psUpdate.executeUpdate();
+//                }
+//
+//                conn.commit();
+//            } catch (SQLException e) {
+//                conn.rollback();
+//                throw new DatabaseException("Error occurred while updating book details: " + e.getMessage());
+//            }
+//        } catch (SQLException e) {
+//            throw new DatabaseException("Database error during updateBookDetails: " + e.getMessage());
+//        }
+//    }
+    
     @Override
     public void updateBookDetails(Book oldBook, Book newBook) throws DatabaseException {
         String updateBooksQuery = 
-            "UPDATE books SET title=?, author=?, category=?, status=? WHERE book_id=?";
+            "UPDATE books SET title=?, author=?, category=? WHERE book_id=?";
 
         try (Connection conn = getDataSource().getConnection()) {
             conn.setAutoCommit(false);
@@ -80,8 +109,7 @@ public class BookDaoImplementation implements BookDaoInterface {
                     psUpdate.setString(1, newBook.getTitle());
                     psUpdate.setString(2, newBook.getAuthor());
                     psUpdate.setString(3, newBook.getCategory().getStringValue());
-                    psUpdate.setString(4, newBook.getStatus().getStringValue());
-                    psUpdate.setInt(5, oldBook.getBookId());
+                    psUpdate.setInt(4, oldBook.getBookId());
                     psUpdate.executeUpdate();
                 }
 
