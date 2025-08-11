@@ -13,7 +13,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.dynamic_library_management.constants.BookAvailability;
-import com.dynamic_library_management.constants.BookCategory;
 import com.dynamic_library_management.constants.BookStatus;
 import com.dynamic_library_management.dao.BookDaoInterface;
 import com.dynamic_library_management.dao.IssueRecordDaoInterface;
@@ -27,7 +26,6 @@ import com.dynamic_library_management.utilities.ConnectionPoolingServlet;
 public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 
 	private final DataSource dataSource = ConnectionPoolingServlet.getDataSource();
-
 	public DataSource getDataSource() {
 		return dataSource;
 	}
@@ -37,29 +35,22 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 
 		try {
 			Connection conn = getDataSource().getConnection();
-
 			MemberDaoInterface memberDao = new MemberDaoImplementation();
 			BookDaoInterface bookDao = new BookDaoImplementation();
-
 			if (memberDao.selectMemberById(issue.getMemberId()) == null) {
 				return "Member does not exist";
 			}
-
 			Book book = bookDao.selectBookById(issue.getBookId());
-			
-			System.out.println("Book " +book.getBookId()+" "+book.getAuthor()+" "+book.getTitle()+" "+book.getStatus()+" "+book.getAvailability());
-			
+//			System.out.println("Book " +book.getBookId()+" "+book.getAuthor()+" "+book.getTitle()+" "+book.getStatus()+" "+book.getAvailability());
 			if (book == null) {
 				return "Book does not exist";
 			}
-
 			if (book.getStatus() != BookStatus.ACTIVE) {
 				return "Book is not active";
 			}
-			if (book.getAvailability() == BookAvailability.ISSUED) {
+			if (book.getAvailability() != BookAvailability.AVAILABLE) {
 				return "Book is not available for issue";
 			}
-
 			String issueSql = "INSERT INTO issue_records (book_id, member_id, status, issue_date, return_date) VALUES (?, ?, ?, ?, ?)";
 			try (PreparedStatement pstmt = conn.prepareStatement(issueSql)) {
 				issue.setStatus(IssueRecordStatus.I);
@@ -70,11 +61,8 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 				pstmt.setDate(5, issue.getReturnDate() != null ? Date.valueOf(issue.getReturnDate()) : null);
 				pstmt.executeUpdate();
 			}
-
 			bookDao.updateBookAvailability(book, "I", conn);
-
 			return "Book issued successfully";
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "Failed to issue book: " + e.getMessage();
@@ -91,11 +79,9 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 			Connection conn = getDataSource().getConnection();
 			BookDaoInterface bookDao = new BookDaoImplementation();
 			MemberDaoInterface memberDao = new MemberDaoImplementation();
-
 			if (memberDao.selectMemberById(memberId) == null) {
 				return "Member does not exist";
 			}
-
 			String selectSql = "SELECT * FROM issue_records WHERE member_id = ? AND book_id = ? AND status = 'I'";
 			int issueId = -1;
 			try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
@@ -107,9 +93,7 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 				}
 				issueId = rs.getInt("issue_id");
 			}
-
 			logIssue(issueId);
-
 			String updateIssueSql = "UPDATE issue_records SET status = 'R', return_date = ? WHERE issue_id = ?";
 			try (PreparedStatement pstmt = conn.prepareStatement(updateIssueSql)) {
 				pstmt.setDate(1, Date.valueOf(LocalDate.now()));
@@ -118,15 +102,12 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 					return "Failed to update issue record";
 				}
 			}
-
 			Book book = bookDao.selectBookById(bookId);
 			if (book == null) {
 				return "Book not found for availability update";
 			}
 			bookDao.updateBookAvailability(book, "A", conn);
-
 			return "Book returned successfully";
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "Failed to return book: " + e.getMessage();
@@ -190,7 +171,7 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Inserting log");
+//		System.out.println("Inserting log");
 	}
 
 }

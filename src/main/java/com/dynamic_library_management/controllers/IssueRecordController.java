@@ -28,14 +28,12 @@ public class IssueRecordController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Fetch all members and books to display on the issue book form
             List<Member> members = new MemberDaoImplementation().getAllMembers();
             List<Book> books = new BookDaoImplementation().selectAllBooks();
 
             request.setAttribute("members", members);
             request.setAttribute("books", books);
 
-            // Forward to issueBook.jsp to display the form
             RequestDispatcher rd = request.getRequestDispatcher("jsp/issueBook.jsp");
             rd.forward(request, response);
 
@@ -55,10 +53,9 @@ public class IssueRecordController extends HttpServlet {
             int memberId = Integer.parseInt(request.getParameter("member"));
             int bookId = Integer.parseInt(request.getParameter("book"));
 
-            IssueRecord issue = new IssueRecord(bookId, memberId, LocalDate.now());
+            IssueRecord issue = new IssueRecord(bookId, memberId);
             String print_message = new IssueRecordDaoImplementation().issueBook(issue);
 
-            // After issuing, reload members and books to show in the form again
             List<Member> members = new MemberDaoImplementation().getAllMembers();
             List<Book> books = new BookDaoImplementation().selectAllBooks();
 

@@ -16,16 +16,17 @@ import com.dynamic_library_management.dao.implementation.ReportsDaoImplementatio
 public class CategoryCountController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		 Map<Object, Long> categoryCountMap = new ReportsDaoImplementation().countOfBooksPerCategory();
-		 
-		 System.out.println(categoryCountMap);
-		    
-		    request.setAttribute("categoryCountMap", categoryCountMap);
-		    
-		    RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/categoryCount.jsp");
-		    dispatcher.forward(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		Map<Object, Long> categoryCountMap = new ReportsDaoImplementation().countOfBooksPerCategory();
+
+//		 System.out.println(categoryCountMap);
+
+		request.setAttribute("categoryCountMap", categoryCountMap);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/categoryCount.jsp");
+		dispatcher.forward(request, response);
 	}
 
 }

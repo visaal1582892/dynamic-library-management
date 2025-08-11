@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.dynamic_library_management.dao.implementation.BookDaoImplementation;
-import com.dynamic_library_management.dao.implementation.IssueRecordDaoImplementation;
 import com.dynamic_library_management.dao.implementation.MemberDaoImplementation;
 import com.dynamic_library_management.domain.Book;
 import com.dynamic_library_management.domain.Member;
@@ -45,11 +44,10 @@ public class ReturnRecordController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		
 		String selectedMemberId = request.getParameter("memberId");
 		if (selectedMemberId != null && !selectedMemberId.isEmpty()) {
 			int memberId = Integer.parseInt(selectedMemberId);
-			System.out.println(memberId);
+//			System.out.println(memberId);
 			try {
 				List<Member> members = new MemberDaoImplementation().getAllMembers();
 				request.setAttribute("members", members);
@@ -60,17 +58,17 @@ public class ReturnRecordController extends HttpServlet {
 				request.setAttribute("step", "book");
 				request.getRequestDispatcher("jsp/returnBook.jsp").forward(request, response);
 
-		} catch (DatabaseException | SQLException e) {
-			e.printStackTrace();
-			request.setAttribute("status", "error");
-			request.setAttribute("message", "Database error occurred.");
-			request.getRequestDispatcher("jsp/returnBook.jsp").forward(request, response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			request.setAttribute("status", "error");
-			request.setAttribute("message", "Unexpected error occurred.");
-			request.getRequestDispatcher("jsp/returnBook.jsp").forward(request, response);
-		}
+			} catch (DatabaseException | SQLException e) {
+				e.printStackTrace();
+				request.setAttribute("status", "error");
+				request.setAttribute("message", "Database error occurred.");
+				request.getRequestDispatcher("jsp/returnBook.jsp").forward(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+				request.setAttribute("status", "error");
+				request.setAttribute("message", "Unexpected error occurred.");
+				request.getRequestDispatcher("jsp/returnBook.jsp").forward(request, response);
+			}
 		}
 	}
 }

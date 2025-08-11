@@ -19,12 +19,11 @@ public class ViewIssuesController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		System.out.println("inside get");
-		try {
 
+//		System.out.println("inside get");
+		try {
 			List<IssueRecord> issues = new IssueRecordDaoImplementation().getAllIssues();
-			System.out.println("Members fetched: " + issues.size());
+//			System.out.println("Members fetched: " + issues.size());
 			request.setAttribute("issues", issues);
 
 			RequestDispatcher rd = request.getRequestDispatcher("jsp/viewIssues.jsp");

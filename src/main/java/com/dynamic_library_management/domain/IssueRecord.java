@@ -17,17 +17,13 @@ public class IssueRecord {
 		this.status = status;
 		this.issueDate = issueDate;
 	}
-
-	public IssueRecord(int bookId, int memberId, IssueRecordStatus status, LocalDate issueDate) {
+	
+	public IssueRecord(int bookId, int memberId, IssueRecordStatus status, LocalDate issueDate,
+			LocalDate returnDate) {
 		this.bookId = bookId;
 		this.memberId = memberId;
 		this.status = status;
 		this.issueDate = issueDate;
-	}
-	
-	public IssueRecord(int bookId, int memberId, IssueRecordStatus status, LocalDate issueDate,
-			LocalDate returnDate) {
-		this(bookId, memberId, status, issueDate);
 		this.returnDate = returnDate;
 	}
 	public IssueRecord(int issueId, int bookId, int memberId, IssueRecordStatus status, LocalDate issueDate,
@@ -39,10 +35,9 @@ public class IssueRecord {
 	public IssueRecord() {
 	}
 
-	public IssueRecord(int bookId, int memberId, LocalDate issueDate) {
-		this.bookId = bookId;
-		this.memberId = memberId;
-		this.issueDate = issueDate;
+	public IssueRecord(int bookId2, int memberId2) {
+		bookId = bookId2;
+		memberId = memberId2;
 	}
 
 	public int getIssueId() {
@@ -98,6 +93,4 @@ public class IssueRecord {
 		return "issueId=" + issueId + ", bookId=" + bookId + ", memberId=" + memberId + ", status=" + status
 				+ ", issueDate=" + issueDate + ", returnDate=" + returnDate;
 	}
-
-	
 }
