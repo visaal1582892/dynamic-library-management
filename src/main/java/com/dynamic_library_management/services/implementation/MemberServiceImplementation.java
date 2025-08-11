@@ -31,8 +31,7 @@ public class MemberServiceImplementation implements MemberServiceInterface {
 			throw new InvalidDetailsException("Invalid mobile number");
 		}
 
-		if (member.getGender() == null
-				|| !(member.getGender().equalsIgnoreCase("Male") || member.getGender().equalsIgnoreCase("Female"))) {
+		if (member.getGender() == null) {
 			throw new InvalidDetailsException("Please select your gender");
 		}
 
@@ -43,9 +42,6 @@ public class MemberServiceImplementation implements MemberServiceInterface {
 		if (member.getMemberName().length() > 60 || member.getMemberName().length() < 3) {
 			throw new InvalidDetailsException("Length Of Member Must Be greater Than 3 And Less Than 60...");
 		}
-
-		String genderCode = member.getGender().equalsIgnoreCase("Male") ? "M" : "F";
-		member.setGender(genderCode);
 
 		memberDAO.insertMember(member);
 	}

@@ -1,4 +1,4 @@
-package com.dynamic_library_management.domain;
+package com.dynamic_library_management.constants;
 
 import java.util.stream.Stream;
 

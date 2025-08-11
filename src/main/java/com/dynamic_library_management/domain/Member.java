@@ -2,6 +2,8 @@ package com.dynamic_library_management.domain;
 
 import java.util.Objects;
 
+import com.dynamic_library_management.constants.MemberGender;
+
 public class Member {
 	private int memberId;
 	private String memberName;
@@ -16,7 +18,7 @@ public class Member {
 		this.mobileNo = mobileNo;
 	}
 
-	private String gender;
+	private MemberGender gender;
 	private String memberAddress;
 
 	public int getMemberId() {
@@ -43,11 +45,11 @@ public class Member {
 		this.memberMail = memberMail;
 	}
 
-	public String getGender() {
+	public MemberGender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(MemberGender gender) {
 		this.gender = gender;
 	}
 
@@ -67,7 +69,7 @@ public class Member {
 		this.memberAddress = memberAddress;
 	}
 
-	public Member(int memberId, String memberName, String memberMail, String mobileNo, String gender,
+	public Member(int memberId, String memberName, String memberMail, String mobileNo, MemberGender gender,
 			String memberAddress) {
 		super();
 		this.memberId = memberId;
@@ -78,7 +80,7 @@ public class Member {
 		this.memberAddress = memberAddress;
 	}
 
-	public Member(String memberName, String memberMail, String mobileNo, String gender, String memberAddress) {
+	public Member(String memberName, String memberMail, String mobileNo, MemberGender gender, String memberAddress) {
 		super();
 		this.memberName = memberName;
 		this.memberMail = memberMail;
