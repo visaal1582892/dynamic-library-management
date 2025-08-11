@@ -1,6 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.dynamic_library_management.constants.MemberGender"%>
+<%@page import="java.util.List"%>
 
+
+<%
+	List<MemberGender> genderList = List.of(MemberGender.values());
+	request.setAttribute("genderList", genderList);
+	System.out.println("genderList"+genderList);
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -141,29 +150,40 @@
 <div class="container">
     <h1>👤 Registration Form</h1>
 
-    <form action="/dynamic-library-management/addMemberController" method="post">
-        <label>Name:</label>
-        <input type="text" name="name" placeholder="Enter Your Name" required />
+   <form action="/dynamic-library-management/addMemberController" method="post">
+  <label>Name:</label>
+<input type="text" name="name" placeholder="Enter Your Name"
+       pattern="[A-Za-z\s]+" 
+       title="Name should contain only letters and spaces"
+       oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')"
+       required />
 
-        <label>Email Id:</label>
-        <input type="text" name="email" placeholder="Enter Your Email Id" required />
+    <label>Email Id:</label>
+    <input type="text" name="email" placeholder="Enter Your Email Id" required />
 
-        <label>Mobile No.:</label>
-        <input type="text" name="mobile" placeholder="Enter Your Mobile Number" required />
+    <label>Mobile No.:</label>
+<input type="text" name="mobile" placeholder="Enter Your Mobile Number"
+       pattern="[6-9][0-9]{9}" 
+       maxlength="10"
+       title="Mobile number must start with 6, 7, 8, or 9 and be exactly 10 digits"
+       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+       required />
+       
+    <label>Gender:</label>
+  <select name="gender" required>
+        <option value="">Select Gender</option>
+        <c:forEach items="${genderList}" var="category">
+                    <option value="${category.dbValue}">${category.stringValue}</option>
+        </c:forEach>
+    </select> 
 
-        <label>Gender:</label>
-        <select name="gender" required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select>
+   
+    <label>Address:</label>
+    <input type="text" name="address" placeholder="Enter Your Address" required />
 
-        <label>Address:</label>
-        <input type="text" name="address" placeholder="Enter Your Address" required />
+    <input type="submit" value="Register ➕" class="btn" />
+</form>
 
-        <input type="submit" value="Register ➕" class="btn" />
-    </form>
 </div>
 
 </body>

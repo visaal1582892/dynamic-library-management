@@ -161,7 +161,7 @@ tr:hover {
 					<th>📱 Mobile</th>
 					<th>⚧️ Gender</th>
 					<th>🏠 Address</th>
-					<th>🗑️ Action</th>
+				<!-- 	<th>🗑️ Action</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -173,9 +173,9 @@ tr:hover {
 					<td><%=member.getMemberName()%></td>
 					<td><%=member.getMemberMail()%></td>
 					<td><%=member.getMobileNo()%></td>
-					<td><%=member.getGender()%></td>
+					<td><%=member.getGender() %></td>
 					<td><%=member.getMemberAddress()%></td>
-					<td>
+					<%-- <td>
 						<form method="post" action="${pageContext.request.contextPath}/deleteMemberController"
 							onsubmit="return confirm('Are you sure you want to delete this member?');"
 							style="display: inline;">
@@ -183,7 +183,7 @@ tr:hover {
 								value="<%=member.getMemberId()%>" />
 							<button type="submit" class="btn-delete">Delete</button>
 						</form>
-					</td>
+					</td> --%>
 				</tr>
 				<%
 				}
