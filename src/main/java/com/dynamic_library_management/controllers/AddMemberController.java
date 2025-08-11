@@ -3,6 +3,7 @@ package com.dynamic_library_management.controllers;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.dynamic_library_management.constants.MemberGender;
 import com.dynamic_library_management.domain.Member;
 import com.dynamic_library_management.exceptions.DatabaseException;
 import com.dynamic_library_management.exceptions.InvalidDetailsException;
@@ -50,22 +51,19 @@ public class AddMemberController extends HttpServlet {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String mobileno = request.getParameter("mobile");
-		String gender = request.getParameter("gender");
+		MemberGender gender = MemberGender.getEnumConstant(request.getParameter("gender"));
 		String address = request.getParameter("address");
 		try {
-			try {
-				new MemberServiceImplementation().addMember(new Member(name, email, mobileno, gender, address));
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			new MemberServiceImplementation().addMember(new Member(name, email, mobileno, gender, address));
 			setSuccess(true);
 			setMessage("Member Added Succesfully...");
-//			ResponseHandler.showResponse(message, "Book Added Succesfully...", Color.GREEN);
 		} catch (InvalidDetailsException | DatabaseException e) {
 			setSuccess(false);
 			setMessage(e.getMessage());
-//			ResponseHandler.showResponse(message, e.getMessage(), Color.RED);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("jsp/addMember.jsp");
 			request.setAttribute("message", getMessage());

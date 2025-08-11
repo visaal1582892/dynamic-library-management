@@ -3,9 +3,12 @@ package com.dynamic_library_management.controllers;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.dynamic_library_management.constants.MemberGender;
 import com.dynamic_library_management.dao.implementation.MemberDaoImplementation;
 import com.dynamic_library_management.domain.Member;
 import com.dynamic_library_management.exceptions.DatabaseException;
+import com.dynamic_library_management.exceptions.InvalidDetailsException;
+import com.dynamic_library_management.services.implementation.MemberServiceImplementation;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -49,31 +52,27 @@ public class UpdateMemberController extends HttpServlet {
 			String email = request.getParameter("email");
 			String mobile = request.getParameter("mobile");
 			String address = request.getParameter("address");
-			String gender = request.getParameter("gender");
+			MemberGender gender = MemberGender.getEnumConstant(request.getParameter("gender"));
 
-			Member oldMember = dao.selectMemberById(memberId);
-			Member newMember = new Member(memberId, name, email, mobile, gender, address);
+			Member updatedMember = new Member(memberId, name, email, mobile, gender, address);
 
-			dao.updateMember(oldMember, newMember);
+			new MemberServiceImplementation().validateUpdateMemberDetails(updatedMember);
+
 			request.setAttribute("message", "Member updated successfully!");
 			request.setAttribute("status", "success");
-
-			request.setAttribute("selectedMember", newMember);
+			request.setAttribute("selectedMember", updatedMember);
 			request.setAttribute("members", dao.getAllMembers());
-			RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
-			dispatcher.forward(request, response);
 
+		} catch (InvalidDetailsException e) {
+			request.setAttribute("message", e.getMessage());
+			request.setAttribute("status", "error");
 		} catch (SQLException | DatabaseException | NumberFormatException e) {
 			request.setAttribute("message", "Failed to update member. Please try again.");
 			request.setAttribute("status", "error");
-			try {
-				request.setAttribute("selectedMember",
-						dao.selectMemberById(Integer.parseInt(request.getParameter("memberId"))));
-				request.setAttribute("members", dao.getAllMembers());
-			} catch (Exception ignored) {
-			}
-			RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
-			dispatcher.forward(request, response);
 		}
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/updateMember.jsp");
+		dispatcher.forward(request, response);
 	}
+
 }
