@@ -86,7 +86,7 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 	        })
 	        .collect(Collectors.toList());
 
-	    System.out.println(overdue);
+//	    System.out.println(overdue);
 	    return overdue;
 	}
 
@@ -95,7 +95,7 @@ public class ReportsDaoImplementation implements ReportsDaoInterface {
 		List<List<String>> data =  new IssueRecordDaoImplementation().getStatusTable().stream()
 				.filter(row -> row.get(4).equals("A") && row.get(3).equals("I"))
 				.collect(Collectors.toList());
-		System.out.println(data);
+//		System.out.println(data);
 		return data;
 	}
 }
