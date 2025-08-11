@@ -193,7 +193,7 @@ public class BookDaoImplementation implements BookDaoInterface {
 
     @Override
     public void deleteBook(Book oldBook) throws DatabaseException {
-        String updateStatusQuery = "UPDATE books SET status=? WHERE book_id=?";
+        String updateStatusQuery = "UPDATE books SET status=? WHERE book_id=? and availability=?";
 
         try (Connection conn = getDataSource().getConnection()) {
             conn.setAutoCommit(false);
@@ -203,11 +203,14 @@ public class BookDaoImplementation implements BookDaoInterface {
                 try (PreparedStatement psUpdateStatus = conn.prepareStatement(updateStatusQuery)) {
                     psUpdateStatus.setString(1, BookStatus.INACTIVE.getStringValue());
                     psUpdateStatus.setInt(2, oldBook.getBookId());
+                    psUpdateStatus.setString(3, BookAvailability.AVAILABLE.getStringValue());
                     int count=psUpdateStatus.executeUpdate();
                     if (count!=1) {
-						throw new DatabaseException("Book Not deleted Correcly...");
+						throw new DatabaseException("An Issued Book Cannot Be Deleted, Not deleted Correcly...");
 					}
-                }
+                }catch (DatabaseException e) {
+					throw e;
+				}
 
                 conn.commit();
             } catch (SQLException e) {

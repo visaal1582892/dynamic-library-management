@@ -139,7 +139,7 @@
 <body>
 
 <% if (message != null && !message.trim().isEmpty()) { %>
-    <div id="popupMessage" class="popup <%= "#c62828".equals(messageColor) ? "error" : "success" %>">
+    <div id="popupMessage" class="popup <%= "red".equals(messageColor) ? "error" : "success" %>">
         <%= message %>
     </div>
 <% } %>
