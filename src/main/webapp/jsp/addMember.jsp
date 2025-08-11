@@ -150,7 +150,7 @@
 <div class="container">
     <h1>👤 Registration Form</h1>
 
-   <form action="/dynamic-library-management/addMemberController" method="post">
+   <form action="${pageContext.request.contextPath}/members/addMemberController" method="post">
   <label>Name:</label>
 <input type="text" name="name" placeholder="Enter Your Name"
        pattern="[A-Za-z\s]+" 

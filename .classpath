@@ -13,17 +13,17 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/SASAPU TARUN/Downloads/jakarta.servlet.jsp.jstl-api-3.0.0.jar">
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/SASAPU TARUN/Downloads/jakarta.servlet.jsp.jstl-3.0.1.jar">
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jakarta.servlet.jsp.jstl-3.0.1.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/SASAPU TARUN/Downloads/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0/mysql-connector-j-9.3.0.jar">
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jakarta.servlet.jsp.jstl-api-3.0.0.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

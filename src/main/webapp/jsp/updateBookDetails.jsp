@@ -172,7 +172,7 @@ input[type="text"], select {
 		<h1>🔄 Update Book</h1>
 
 		<form
-			action="${pageContext.request.contextPath}/updateBookDetailsController"
+			action="${pageContext.request.contextPath}/books/updateBookDetailsController"
 			method="post">
 			<label>Search Book:</label> <input type="text" id="searchBook"
 				placeholder="Search by title or author" autocomplete="off" />

@@ -84,9 +84,9 @@
 
 <div class="container">
     <h1>Reports</h1>
-    <a href="../overdueRecords" class="btn">📅 List of Overdue Books</a>
-    <a href="../categoryCount" class="btn">📚 Count of Books per Category</a>
-    <a href="../activeIssuedRecords" class="btn">👤 Members with Active Issued Books</a>
+    <a href="${pageContext.request.contextPath}/reports/overdueRecords" class="btn">📅 List of Overdue Books</a>
+    <a href="${pageContext.request.contextPath}/reports/categoryCount" class="btn">📚 Count of Books per Category</a>
+    <a href="${pageContext.request.contextPath}/reports/activeIssuedRecords" class="btn">👤 Members with Active Issued Books</a>
 </div>
 
 </body>

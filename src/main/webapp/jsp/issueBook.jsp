@@ -161,7 +161,7 @@
 
 <div class="container">
     <h1>📖 Issue Book</h1>
-    <form action="issueRecord" method="post">
+    <form action="${pageContext.request.contextPath}/issuesAndReturns/issueRecord" method="post">
         <label>Select Member:</label>
         <select name="member" required>
             <option value="" disabled selected>Select Member</option>

@@ -143,7 +143,7 @@ input[type="text"], select {
 	<div class="container">
 		<h1>Add Book</h1>
 
-		<form action="/dynamic-library-management/addBookController"
+		<form action="${pageContext.request.contextPath}/books/addBookController"
 			method="post">
 			<label>Title:</label> <input type="text" name="title"
 				placeholder="Enter Book Title" required /> <label>Author:</label> <input

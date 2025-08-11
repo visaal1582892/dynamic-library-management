@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.dynamic_library_management.dao.implementation.BookDaoImplementation;
-import com.dynamic_library_management.dao.implementation.IssueRecordDaoImplementation;
 import com.dynamic_library_management.dao.implementation.MemberDaoImplementation;
 import com.dynamic_library_management.domain.Book;
 import com.dynamic_library_management.domain.Member;

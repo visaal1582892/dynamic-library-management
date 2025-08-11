@@ -87,7 +87,7 @@
 
         <a href="./addBook.jsp" class="btn">➕ Add Book</a>
         <a href="./updateBookDetails.jsp" class="btn">✏️ Update Book</a>
-        <a href="../viewAllBooksController" class="btn">📖 View All Books</a>
+        <a href="../books/viewAllBooksController" class="btn">📖 View All Books</a>
     </div>
 
 </body>

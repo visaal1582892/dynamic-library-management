@@ -161,7 +161,7 @@
 <div class="container">
 
     <!-- Form for selecting member -->
-    <form action="/dynamic-library-management/updateMemberController" method="get">
+    <form action="${pageContext.request.contextPath}/members/updateMemberController" method="get">
         <h1>✏ Update Member</h1>
 
         <div class="form-group">
@@ -194,7 +194,7 @@
         </div>
     </form>
 
-    <form action="/dynamic-library-management/updateMemberController" method="post">
+    <form action="${pageContext.request.contextPath}/members/updateMemberController" method="post">
         <%
             if (selected != null) {
         %>
