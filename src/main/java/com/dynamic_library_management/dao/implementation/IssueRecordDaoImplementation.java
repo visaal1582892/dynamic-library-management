@@ -82,6 +82,10 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 			if (memberDao.selectMemberById(memberId) == null) {
 				return "Member does not exist";
 			}
+			Book book = bookDao.selectBookById(bookId);
+			if (book == null) {
+				return "Book does not exist";
+			}
 			String selectSql = "SELECT * FROM issue_records WHERE member_id = ? AND book_id = ? AND status = 'I'";
 			int issueId = -1;
 			try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
@@ -101,10 +105,6 @@ public class IssueRecordDaoImplementation implements IssueRecordDaoInterface {
 				if (pstmt.executeUpdate() == 0) {
 					return "Failed to update issue record";
 				}
-			}
-			Book book = bookDao.selectBookById(bookId);
-			if (book == null) {
-				return "Book not found for availability update";
 			}
 			bookDao.updateBookAvailability(book, "A", conn);
 			return "Book returned successfully";

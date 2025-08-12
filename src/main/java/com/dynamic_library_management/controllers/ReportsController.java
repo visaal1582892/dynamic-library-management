@@ -20,56 +20,57 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/reports/*")
 public class ReportsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	@Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-    	
-    	String pathInfo = request.getPathInfo();
-    	if (pathInfo.equals("/overdueRecords")) {
-    		try {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 
-    			List<String[]> overdue = new ArrayList<>();
-    			List<List<String>> raw = new ReportsDaoImplementation().getOverdueBooks();
-    			
-    			for (List<String> row : raw) {
-    				overdue.add(row.toArray(new String[0]));
-    			}
-    					
-    			request.setAttribute("overdue", overdue);
+		String pathInfo = request.getPathInfo();
+		if (pathInfo.equals("/overdueRecords")) {
+			try {
 
-    			RequestDispatcher rd = request.getRequestDispatcher("../jsp/overdueRecords.jsp");
-    			rd.forward(request, response);
+				List<String[]> overdue = new ArrayList<>();
+				List<List<String>> raw = new ReportsDaoImplementation().getOverdueBooks();
 
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-    	}else if(pathInfo.equals("/categoryCount")) {
-    		Map<Object, Long> categoryCountMap = new ReportsDaoImplementation().countOfBooksPerCategory();
-   		 
-   		 System.out.println(categoryCountMap);
-   		    
-   		    request.setAttribute("categoryCountMap", categoryCountMap);
-   		    
-   		    RequestDispatcher dispatcher = request.getRequestDispatcher("../jsp/categoryCount.jsp");
-   		    dispatcher.forward(request, response);
-    	}else if(pathInfo.equals("/activeIssuedRecords")) {
-    		try {
+				for (List<String> row : raw) {
+					overdue.add(row.toArray(new String[0]));
+				}
 
-    			List<String[]> activeIssues = new ArrayList<>();
-    			List<List<String>> raw = new ReportsDaoImplementation().getActiveIssuedBooks();
-    			for (List<String> row : raw) {
-    			    activeIssues.add(row.toArray(new String[0]));
-    			}
-    					
-    			request.setAttribute("activeIssues", activeIssues);
+				request.setAttribute("overdue", overdue);
 
-    			RequestDispatcher rd = request.getRequestDispatcher("../jsp/activeIssuedRecords.jsp");
-    			rd.forward(request, response);
+				RequestDispatcher rd = request.getRequestDispatcher("../jsp/overdueRecords.jsp");
+				rd.forward(request, response);
 
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-    	}
-    }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (pathInfo.equals("/categoryCount")) {
+			Map<Object, Long> categoryCountMap = new ReportsDaoImplementation().countOfBooksPerCategory();
+
+//   		 System.out.println(categoryCountMap);
+
+			request.setAttribute("categoryCountMap", categoryCountMap);
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("../jsp/categoryCount.jsp");
+			dispatcher.forward(request, response);
+		} else if (pathInfo.equals("/activeIssuedRecords")) {
+			try {
+
+				List<String[]> activeIssues = new ArrayList<>();
+				List<List<String>> raw = new ReportsDaoImplementation().getActiveIssuedBooks();
+				for (List<String> row : raw) {
+					activeIssues.add(row.toArray(new String[0]));
+				}
+
+				request.setAttribute("activeIssues", activeIssues);
+
+				RequestDispatcher rd = request.getRequestDispatcher("../jsp/activeIssuedRecords.jsp");
+				rd.forward(request, response);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }
