@@ -89,7 +89,7 @@
     <div class="container">
         <h1>📚 Issue / Return Book</h1>
         <a href="${pageContext.request.contextPath}/issuesAndReturns/issueRecord" class="btn">📖 Issue Book</a>
-        <a href="../returnRecord" class="btn">🔄 Return Book</a>
+        <a href="${pageContext.request.contextPath}/issuesAndReturns/returnRecord" class="btn">🔄 Return Book</a>
         <a href="${pageContext.request.contextPath}/issuesAndReturns/viewIssues" class="btn">📋 View All Issues</a>
     </div>
 
