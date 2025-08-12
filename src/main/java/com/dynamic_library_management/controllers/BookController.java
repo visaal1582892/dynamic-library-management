@@ -105,7 +105,8 @@ public class BookController extends HttpServlet {
 
             	try {
         			String bookIdString = request.getParameter("bookId");
-        			if (bookIdString == null) {
+        			System.out.println(bookIdString);
+        			if (bookIdString.equals("")) {
         				throw new InvalidDetailsException("Book Must Be Selected to Update...");
         			}
         			int id = Integer.parseInt(bookIdString.split(",")[0]);
