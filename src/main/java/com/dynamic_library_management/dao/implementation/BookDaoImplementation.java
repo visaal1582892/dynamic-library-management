@@ -59,7 +59,7 @@ public class BookDaoImplementation implements BookDaoInterface {
             psInsert.setString(3, book.getCategory().getStringValue());
             psInsert.setString(4, book.getStatus().getStringValue());
             psInsert.setString(5, book.getAvailability().getStringValue());
-            int count=psInsert.executeUpdate();;
+            int count=psInsert.executeUpdate();
             if (count!=1) {
 				throw new DatabaseException("Book Not Added Correctly");
 			}
@@ -69,6 +69,9 @@ public class BookDaoImplementation implements BookDaoInterface {
                 id = rs.getInt(1);
             }
         } catch (SQLException e) {
+        	if (e.getErrorCode() == 1062) { 
+        		throw new DatabaseException("Combination of author and title must be unique...");
+            }
             throw new DatabaseException("Failed to add book: " + e.getMessage());
         }catch(DatabaseException e) {
         	throw e;

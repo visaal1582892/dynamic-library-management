@@ -172,7 +172,7 @@
                 <td><%= book.getStatus() %></td>
                 <td><%= book.getAvailability() %></td>
                 <td>
-                    <form method="post" action="${pageContext.request.contextPath}/deleteBookController" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this member?');">
+                    <form method="post" action="${pageContext.request.contextPath}/books/deleteBookController" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this member?');">
                         <input type="hidden" name="bookId" value="<%= book.getBookId() %>" />
                         <button class="btn-delete" type="submit">Delete</button>
                     </form>
