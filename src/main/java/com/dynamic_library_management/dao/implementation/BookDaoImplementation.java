@@ -108,7 +108,7 @@ public class BookDaoImplementation implements BookDaoInterface {
     @Override
     public void updateBookDetails(Book oldBook, Book newBook) throws DatabaseException {
         String updateBooksQuery = 
-            "UPDATE books SET title=?, author=?, category=? WHERE book_id=?";
+            "UPDATE books SET title=?, author=?, category=? WHERE book_id=? and availability='A'";
 
         try (Connection conn = getDataSource().getConnection()) {
             conn.setAutoCommit(false);
@@ -122,7 +122,7 @@ public class BookDaoImplementation implements BookDaoInterface {
                     psUpdate.setInt(4, oldBook.getBookId());
                     int count=psUpdate.executeUpdate();
                     if (count!=1) {
-						throw new DatabaseException("Book Not Updated Correctly...");
+						throw new DatabaseException("Book Alreday Issued Or Not Updated Correctly...");
 					}
                 }catch(DatabaseException e) {
                 	throw e;
