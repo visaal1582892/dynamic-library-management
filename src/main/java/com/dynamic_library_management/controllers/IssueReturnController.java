@@ -45,13 +45,15 @@ public class IssueReturnController extends HttpServlet {
 
 					// Forward to issueBook.jsp to display the form
 					RequestDispatcher rd = request.getRequestDispatcher("../jsp/issueBook.jsp");
+//					RequestDispatcher rd = request.getRequestDispatcher("../jsp/issueBookChanges.jsp");
 					rd.forward(request, response);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 					request.setAttribute("status", "error");
-					request.setAttribute("message", "Failed to load issue form.");
-					request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
+					request.setAttribute("message", "Failed to load issue form.");				
+				request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
+//					request.getRequestDispatcher("../jsp/issueBookChanges.jsp").forward(request, response);
 				}
 			} else if (pathInfo.equals("/returnRecord")) {
 				try {
@@ -103,19 +105,55 @@ public class IssueReturnController extends HttpServlet {
 			if (pathInfo.equals("/issueRecord")) {
 
 				try {
-					int memberId = Integer.parseInt(request.getParameter("member"));
-					int bookId = Integer.parseInt(request.getParameter("book"));
+					List<Member> members = new MemberDaoImplementation().getAllMembers();
+					List<Book> books = new BookDaoImplementation().selectAllBooks();
+
+					request.setAttribute("members", members);
+					request.setAttribute("books", books);
+					
+					int memberId = -1;
+					int bookId = -1;
+					boolean memberError = false;
+					boolean bookError = false;
+
+					try {
+						memberId = Integer.parseInt(request.getParameter("member"));
+					} catch (NumberFormatException e) {
+						memberError = true;
+					}
+
+					try {
+						bookId = Integer.parseInt(request.getParameter("book"));
+					} catch (NumberFormatException e) {
+						bookError = true;
+					}
+
+					if (memberError && bookError) {
+						request.setAttribute("status", "error");
+						request.setAttribute("message", "Invalid member and book");				
+						request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
+//						request.getRequestDispatcher("../jsp/issueBookChanges.jsp").forward(request, response);
+						return;
+					} else if (memberError) {
+						request.setAttribute("status", "error");
+						request.setAttribute("message", "Invalid member");				
+						request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
+//						request.getRequestDispatcher("../jsp/issueBookChanges.jsp").forward(request, response);
+						return;
+					} else if (bookError) {
+						request.setAttribute("status", "error");
+						request.setAttribute("message", "Invalid book");				
+						request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
+//						request.getRequestDispatcher("../jsp/issueBookChanges.jsp").forward(request, response);
+						return;
+					}
 
 //					System.out.println(memberId + " - " + bookId);
 					IssueRecord issue = new IssueRecord(bookId, memberId, LocalDate.now());
 					String print_message = new IssueRecordDaoImplementation().issueBook(issue);
 
 					// After issuing, reload members and books to show in the form again
-					List<Member> members = new MemberDaoImplementation().getAllMembers();
-					List<Book> books = new BookDaoImplementation().selectAllBooks();
 
-					request.setAttribute("members", members);
-					request.setAttribute("books", books);
 					request.setAttribute("message", print_message);
 
 					if ("Book issued successfully".equals(print_message)) {
@@ -125,25 +163,22 @@ public class IssueReturnController extends HttpServlet {
 					}
 
 					RequestDispatcher rd = request.getRequestDispatcher("../jsp/issueBook.jsp");
+//					RequestDispatcher rd = request.getRequestDispatcher("../jsp/issueBookChanges.jsp");
 					rd.forward(request, response);
-
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-					request.setAttribute("status", "error");
-					request.setAttribute("message", "Invalid member or book ID.");
-					request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
 
 				} catch (DatabaseException | SQLException e) {
 					e.printStackTrace();
 					request.setAttribute("status", "error");
 					request.setAttribute("message", "An error occurred while issuing the book.");
 					request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
+//					request.getRequestDispatcher("../jsp/issueBookChanges.jsp").forward(request, response);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 					request.setAttribute("status", "error");
-					request.setAttribute("message", "Unexpected error occurred.");
-					request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
+					request.setAttribute("message", "Unexpected error occurred.");					
+				request.getRequestDispatcher("../jsp/issueBook.jsp").forward(request, response);
+//					request.getRequestDispatcher("../jsp/issueBookChanges.jsp").forward(request, response);
 				}
 
 			} else if (pathInfo.equals("/returnRecord")) {

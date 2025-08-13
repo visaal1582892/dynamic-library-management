@@ -166,7 +166,7 @@
 				<option value="">Select Member</option>
 				<c:forEach var="m" items="${members}">
 					<option value="${m.memberId}"
-						${selectedMemberId == m.memberId ? "selected" : ""}>${m.memberId}. ${m.memberName}</option>
+						${selectedMemberId == m.memberId ? "selected" : ""}>${m.memberName}</option>
 				</c:forEach>
 			</select>
 
@@ -175,7 +175,7 @@
 				<select name="bookId" required>
 					<option value="">Select Book</option>
 					<c:forEach var="b" items="${books}">
-						<option value="${b.bookId}">${b.bookId}. ${b.title}</option>
+						<option value="${b.bookId}">${b.title}</option>
 					</c:forEach>
 				</select>
 			</c:if>

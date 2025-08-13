@@ -165,7 +165,7 @@
         <select name="member" required>
             <option value="" disabled selected>Select Member</option>
             <c:forEach var="member" items="${members}">
-                <option value="${member.memberId}">${member.memberId}. ${member.memberName}</option>
+                <option value="${member.memberId}">${member.memberName}</option>
             </c:forEach>
         </select>
 
@@ -173,7 +173,7 @@
         <select name="book" required>
             <option value="" disabled selected>Select Book</option>
             <c:forEach var="book" items="${books}">
-                <option value="${book.bookId}">${book.bookId}. ${book.title}</option>
+                <option value="${book.bookId}">${book.title}</option>
             </c:forEach>
         </select>
 
